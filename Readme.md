@@ -1,6 +1,10 @@
-# Women Resources API
+# Women Resources
 
 This project is a web-based platform designed to improve access to critical resources for women in Kigali, Rwanda. Built using Express.js and SQLite, the backend serves as a RESTful API to facilitate resource discovery, user registration, and data management for the frontend React and Tailwind CSS.
+
+# Designs
+
+The Designs of the project can be found [Figma](https://www.figma.com/design/QnS07Q1l4hlZnyoR3Lxn3W/Capstone-Ornella?node-id=5-87&t=qTA5NgOH2trhK0nS-1)
 
 ## Features
 
