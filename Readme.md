@@ -42,9 +42,9 @@ This project is a web-based platform designed to improve access to critical reso
 - Body-parser
 - Cors
 
-## Contribution
+## Deployment
 
-Feel free to fork this repository and submit pull requests for improvements or additional features.
+The Frontend is deployed on Vercel at this [link](https://capstone-women-kigalihub.vercel.app/) and the Backend will be deployed on Render.
 
 ## License
 
