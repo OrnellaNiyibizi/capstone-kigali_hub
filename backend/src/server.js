@@ -31,5 +31,5 @@ app.use(errorHandler);
 
 // Start server
 app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+  console.log(`Server running on http://${config.HOST}:${port}`);
 });

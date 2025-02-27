@@ -1,8 +1,8 @@
 import React from 'react';
-import SearchBar from './components/community/SearchBar';
-import CategoryList from './components/community/CategoryList';
-import DiscussionList from './components/community/DiscussionList';
-import PostForm from './components/community/PostForm';
+import SearchBar from '../components/community/SearchBar';
+import CategoryList from '../components/community/CategoryList';
+import DiscussionList from '../components/community/DiscussionList';
+import PostForm from '../components/community/PostForm';
 
 const CommunityForum: React.FC = () => {
   return (

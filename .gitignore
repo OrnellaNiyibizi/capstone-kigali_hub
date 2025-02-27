@@ -7,6 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
 dist
 dist-ssr
@@ -22,3 +23,39 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables and secrets
+.env
+.env.*
+.env.local
+.env.development
+.env.test
+.env.production
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Sensitive files
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.cert
+*.crt
+*.der
+
+# Config files with sensitive data
+config.json
+credentials.json
+secrets.json
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+# Testing coverage
+coverage/
+.nyc_output/
