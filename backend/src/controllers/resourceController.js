@@ -93,3 +93,43 @@ export const deleteResource = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// Update your getResources function to handle filters
+export const getResources = async (req, res) => {
+  try {
+    const { category, title, tags, sortBy } = req.query;
+    
+    // Build filter object
+    const filter = {};
+    
+    if (category) {
+      filter.category = category;
+    }
+    
+    if (title) {
+      filter.title = { $regex: title, $options: 'i' }; // Case-insensitive search
+    }
+    
+    if (tags) {
+      filter.tags = { $in: Array.isArray(tags) ? tags : [tags] };
+    }
+    
+    // Build sort object
+    let sort = {};
+    if (sortBy === 'newest') {
+      sort = { createdAt: -1 };
+    } else if (sortBy === 'oldest') {
+      sort = { createdAt: 1 };
+    } else if (sortBy === 'popular') {
+      sort = { views: -1 };
+    }
+    
+    const resources = await Resource.find(filter)
+      .sort(sort)
+      .populate('user', 'name email');
+      
+    res.json(resources);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Header from '../../components/homepage/Header';
+import axios from 'axios';
+import ResourceFilters from '../../components/resources/ResourceFilters';
 
 interface Resource {
   _id: string;
@@ -24,17 +26,25 @@ const ResourcesForWomen: React.FC = () => {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const { isAuthenticated, user, token } = useAuth();
+  const [filters, setFilters] = useState({
+    category: '',
+    title: '',
+    sortBy: 'newest',
+  });
 
   const fetchResources = async () => {
+    setLoading(true);
     try {
-      const response = await fetch('http://localhost:3000/api/resources');
-      if (!response.ok) {
-        throw new Error('Failed to fetch resources');
-      }
-      const data = await response.json();
-      setResources(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      // Build query string from filters
+      const params = new URLSearchParams();
+      if (filters.category) params.append('category', filters.category);
+      if (filters.title) params.append('title', filters.title);
+      if (filters.sortBy) params.append('sortBy', filters.sortBy);
+
+      const response = await axios.get(`/api/resources?${params.toString()}`);
+      setResources(response.data);
+    } catch (error) {
+      console.error('Error fetching resources:', error);
     } finally {
       setLoading(false);
     }
@@ -42,7 +52,7 @@ const ResourcesForWomen: React.FC = () => {
 
   useEffect(() => {
     fetchResources();
-  }, []);
+  }, [filters]);
 
   // Update canEdit function to match the resource structure
   const canEdit = (resource: Resource) => {
@@ -59,38 +69,25 @@ const ResourcesForWomen: React.FC = () => {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/resources/${resourceId}`,
-        {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || 'Failed to delete resource');
-      }
+      // Using axios instead of fetch
+      await axios.delete(`/api/resources/${resourceId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setSuccessMessage('Resource deleted successfully!');
-
-      // Remove the deleted resource from state
       setResources(resources.filter((resource) => resource._id !== resourceId));
 
-      // Clear success message after 3 seconds
-      setTimeout(() => {
-        setSuccessMessage('');
-      }, 3000);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-
-      // Clear error message after 3 seconds
-      setTimeout(() => {
-        setError('');
-      }, 3000);
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (error) {
+      setError(error.response?.data?.message || 'Failed to delete resource');
+      setTimeout(() => setError(''), 3000);
     }
+  };
+
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
   };
 
   return (
@@ -98,6 +95,7 @@ const ResourcesForWomen: React.FC = () => {
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
+          search
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold text-purple-900">
               Resources for Women
@@ -110,19 +108,17 @@ const ResourcesForWomen: React.FC = () => {
               </Link>
             )}
           </div>
-
+          <ResourceFilters onFilterChange={handleFilterChange} />
           {error && (
             <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
               {error}
             </div>
           )}
-
           {successMessage && (
             <div className="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
               {successMessage}
             </div>
           )}
-
           {loading ? (
             <div className="text-center py-10">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-purple-500 border-t-transparent"></div>
