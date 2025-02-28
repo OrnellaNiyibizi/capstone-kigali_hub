@@ -109,7 +109,7 @@ const DiscussionDetail: React.FC = () => {
   };
 
   const canModifyDiscussion =
-    discussion && isAuthenticated && user?.email === discussion.user.email;
+    discussion && isAuthenticated && user?.email === discussion.user?.email;
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
@@ -162,7 +162,9 @@ const DiscussionDetail: React.FC = () => {
                 </div>
 
                 <div className="mt-2 flex items-center text-sm text-gray-500">
-                  <span>Posted by {discussion.user.name}</span>
+                  <span>
+                    Posted by {discussion.user?.name || 'Unknown User'}
+                  </span>
                   <span className="mx-2">•</span>
                   <span>{formatDate(discussion.createdAt)}</span>
                 </div>
@@ -249,7 +251,7 @@ const DiscussionDetail: React.FC = () => {
                           <div>
                             <div className="flex items-center">
                               <span className="font-medium text-gray-900">
-                                {comment.user.name}
+                                {comment.user?.name || 'Unknown User'}
                               </span>
                               <span className="mx-2 text-gray-500">•</span>
                               <span className="text-sm text-gray-500">

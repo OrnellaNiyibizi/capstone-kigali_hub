@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { Discussion } from '../types/Discussion';
 
 // Using relative path for API to work with Vite proxy
@@ -9,9 +9,10 @@ export const fetchDiscussions = async (category?: string): Promise<Discussion[]>
     const url = category ? `${API_URL}?category=${category}` : API_URL;
     const response = await axios.get(url);
     return response.data;
-  } catch (error) {
+  } catch (error: unknown) {
+    const axiosError = error as AxiosError<{ message?: string }>;
     throw new Error(
-      error.response?.data?.message || 'Failed to fetch discussions'
+      axiosError.response?.data?.message || 'Failed to fetch discussions'
     );
   }
 };
@@ -20,9 +21,10 @@ export const fetchDiscussion = async (id: string): Promise<Discussion> => {
   try {
     const response = await axios.get(`${API_URL}/${id}`);
     return response.data;
-  } catch (error) {
+  } catch (error: unknown) {
+    const axiosError = error as AxiosError<{ message?: string }>;
     throw new Error(
-      error.response?.data?.message || 'Failed to fetch discussion'
+      axiosError.response?.data?.message || 'Failed to fetch discussion'
     );
   }
 };
@@ -39,9 +41,10 @@ export const createDiscussion = async (
       },
     });
     return response.data.discussion;
-  } catch (error) {
+  } catch (error: unknown) {
+    const axiosError = error as AxiosError<{ message?: string }>;
     throw new Error(
-      error.response?.data?.message || 'Failed to create discussion'
+      axiosError.response?.data?.message || 'Failed to create discussion'
     );
   }
 };
@@ -59,9 +62,10 @@ export const updateDiscussion = async (
       },
     });
     return response.data.discussion;
-  } catch (error) {
+  } catch (error: unknown) {
+    const axiosError = error as AxiosError<{ message?: string }>;
     throw new Error(
-      error.response?.data?.message || 'Failed to update discussion'
+      axiosError.response?.data?.message || 'Failed to update discussion'
     );
   }
 };
@@ -73,9 +77,10 @@ export const deleteDiscussion = async (id: string, token: string): Promise<void>
         Authorization: `Bearer ${token}`,
       },
     });
-  } catch (error) {
+  } catch (error: unknown) {
+    const axiosError = error as AxiosError<{ message?: string }>;
     throw new Error(
-      error.response?.data?.message || 'Failed to delete discussion'
+      axiosError.response?.data?.message || 'Failed to delete discussion'
     );
   }
 };
@@ -97,9 +102,10 @@ export const addComment = async (
       }
     );
     return response.data;
-  } catch (error) {
+  } catch (error: unknown) {
+    const axiosError = error as AxiosError<{ message?: string }>;
     throw new Error(
-      error.response?.data?.message || 'Failed to add comment'
+      axiosError.response?.data?.message || 'Failed to add comment'
     );
   }
 };
@@ -115,9 +121,10 @@ export const deleteComment = async (
         Authorization: `Bearer ${token}`,
       },
     });
-  } catch (error) {
+  } catch (error: unknown) {
+    const axiosError = error as AxiosError<{ message?: string }>;
     throw new Error(
-      error.response?.data?.message || 'Failed to delete comment'
+      axiosError.response?.data?.message || 'Failed to delete comment'
     );
   }
 };
