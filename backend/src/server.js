@@ -32,6 +32,11 @@ app.use('/api/users', userRoutes);
 app.use('/api/resources', resourceRoutes);
 app.use('/api/discussions', discussionRoutes);
 
+// Hello World route
+app.get('/', (req, res) => {
+  res.json({ message: 'Hello World!' });
+});
+
 // Error handling middleware
 app.use(errorHandler);
 
