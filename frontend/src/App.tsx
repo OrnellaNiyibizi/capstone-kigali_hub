@@ -6,6 +6,9 @@ import ResourcesForWomen from './pages/resources/Resources';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Profile from './pages/Profile';
+import DiscussionList from './pages/discussions/DiscussionList';
+import DiscussionDetail from './pages/discussions/DiscussionDetail';
+import AddEditDiscussion from './pages/discussions/AddEditDiscussion';
 
 import { AuthProvider } from './context/AuthContext';
 import './App.css';
@@ -20,6 +23,24 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<KigaliWomenHub />} />
             <Route path="/community" element={<CommunityForum />} />
+            <Route path="/discussions" element={<DiscussionList />} />
+            <Route path="/discussions/:id" element={<DiscussionDetail />} />
+            <Route
+              path="/discussions/new"
+              element={
+                <ProtectedRoute>
+                  <AddEditDiscussion />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/discussions/edit/:id"
+              element={
+                <ProtectedRoute>
+                  <AddEditDiscussion />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/resources" element={<ResourcesForWomen />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -32,7 +53,7 @@ const App: React.FC = () => {
               }
             />
             <Route
-              path="add-resource"
+              path="/add-resource"
               element={
                 <ProtectedRoute>
                   <AddEditResource />
