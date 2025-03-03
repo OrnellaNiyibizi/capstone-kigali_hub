@@ -8,7 +8,7 @@ const getBaseUrl = () => {
   }
 
   // For production, use your deployed backend URL
-  return import.meta.env.VITE_API_URL || 'https://your-backend-url.vercel.app';
+  return import.meta.env.VITE_API_URL;
 };
 
 // Create an axios instance with the appropriate base URL
