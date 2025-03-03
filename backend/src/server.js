@@ -19,12 +19,10 @@ const FRONTEND_URL = process.env.FRONTEND_URL;
 // Middleware
 // In your backend CORS configuration
 app.use(cors({
-  origin: [
-    'http://localhost:5173',  // Local development
-    process.env.FRONTEND_URL  // Production frontend
-  ],
+  origin: '*', // Allow all origins (temporary fix)
   credentials: true
 }));
+
 app.use(bodyParser.json());
 
 // Fix deprecation warnings
