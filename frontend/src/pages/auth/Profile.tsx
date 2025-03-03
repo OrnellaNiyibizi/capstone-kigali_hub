@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios'; // Add AxiosError type
-import { useAuth } from '../context/AuthContext';
-import Header from '../components/homepage/Header';
-import Footer from '../components/homepage/Footer';
-import api from '../services/api';
+import { useAuth } from '../../context/AuthContext';
+import Header from '../../components/common/Header';
+import Footer from '../../components/common/Footer';
+import api from '../../services/api';
 
 interface Resource {
   _id: string;

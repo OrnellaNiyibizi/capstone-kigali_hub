@@ -26,7 +26,7 @@ const Header: React.FC = () => {
   }, []);
 
   return (
-    <header className="bg-purple-600 shadow-md">
+    <header className="bg-purple-900 shadow-md">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}

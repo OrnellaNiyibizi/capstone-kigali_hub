@@ -98,22 +98,26 @@ export const deleteResource = async (req, res) => {
 export const getResources = async (req, res) => {
   try {
     const { category, title, tags, sortBy } = req.query;
-    
+    console.log('Filter query:', req.query); // Add logging
+
     // Build filter object
     const filter = {};
-    
+
     if (category) {
-      filter.category = category;
+      // Make category search case-insensitive too
+      filter.category = { $regex: category, $options: 'i' };
     }
-    
+
     if (title) {
       filter.title = { $regex: title, $options: 'i' }; // Case-insensitive search
     }
-    
+
     if (tags) {
       filter.tags = { $in: Array.isArray(tags) ? tags : [tags] };
     }
-    
+
+    console.log('MongoDB filter:', filter); // Add logging
+
     // Build sort object
     let sort = {};
     if (sortBy === 'newest') {
@@ -123,13 +127,15 @@ export const getResources = async (req, res) => {
     } else if (sortBy === 'popular') {
       sort = { views: -1 };
     }
-    
+
     const resources = await Resource.find(filter)
       .sort(sort)
       .populate('user', 'name email');
-      
+
+    console.log(`Found ${resources.length} resources`); // Add logging
     res.json(resources);
   } catch (error) {
+    console.error('Error in getResources:', error); // Add logging
     res.status(500).json({ message: error.message });
   }
 };

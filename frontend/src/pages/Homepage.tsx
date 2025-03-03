@@ -1,11 +1,11 @@
 import React from 'react';
-import Header from '../components/homepage/Header.tsx';
+import Header from '../components/common/Header.tsx';
 import Hero from '../components/homepage/Hero.tsx';
 import Objective from '../components/homepage/Objective.tsx';
 import HighlightedCategories from '../components/homepage/HighlightedCategories.tsx';
 import SuccessStories from '../components/homepage/SuccessStories.tsx';
 import CallToAction from '../components/homepage/CallToAction.tsx';
-import Footer from '../components/homepage/Footer.tsx';
+import Footer from '../components/common/Footer.tsx';
 
 const KigaliWomenHub: React.FC = () => {
   return (

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import Header from '../components/homepage/Header';
-import Footer from '../components/homepage/Footer';
+import { useAuth } from '../../context/AuthContext';
+import Header from '../../components/common/Header';
+import Footer from '../../components/common/Footer';
 
 const CommunityForum: React.FC = () => {
   const { isAuthenticated } = useAuth();

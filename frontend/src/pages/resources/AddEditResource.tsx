@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
 import { useAuth } from '../../context/AuthContext';
-import Header from '../../components/homepage/Header';
-import Footer from '../../components/homepage/Footer';
+import Header from '../../components/common/Header';
+import Footer from '../../components/common/Footer';
 import api from '../../services/api';
+import { RESOURCE_CATEGORIES } from '../../utils/constants';
 
 const AddEditResource: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
@@ -219,14 +220,11 @@ const AddEditResource: React.FC = () => {
                 <option value="" disabled>
                   Select a category
                 </option>
-                <option value="Healthcare">Healthcare</option>
-                <option value="Education">Education</option>
-                <option value="Finance">Finance</option>
-                <option value="Networking">Networking</option>
-                <option value="Business">Business</option>
-                <option value="Employment">Employment</option>
-                <option value="Events">Events</option>
-                <option value="Other">Other</option>
+                {RESOURCE_CATEGORIES.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
               </select>
             </div>
 

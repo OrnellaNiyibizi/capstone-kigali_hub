@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchDiscussions } from '../../services/discussionService';
 import { Discussion } from '../../types/Discussion';
-import Header from '../../components/homepage/Header';
-import Footer from '../../components/homepage/Footer';
+import Header from '../../components/common/Header';
+import Footer from '../../components/common/Footer';
 import { useAuth } from '../../context/AuthContext';
 
 const DiscussionList: React.FC = () => {

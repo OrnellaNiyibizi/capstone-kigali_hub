@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import Header from '../../components/homepage/Header';
+import Header from '../../components/common/Header';
 import axios, { AxiosError } from 'axios';
-import ResourceFilters from '../../components/resources/ResourceFilters';
+import ResourceFilters, {
+  FilterOptions,
+} from '../../components/resources/ResourceFilters';
 import api from '../../services/api';
+import Footer from '../../components/common/Footer';
 
 interface Resource {
   _id: string;
@@ -33,27 +36,73 @@ const ResourcesForWomen: React.FC = () => {
     sortBy: 'newest',
   });
 
-  const fetchResources = async () => {
-    setLoading(true);
-    try {
-      // Build query string from filters
-      const params = new URLSearchParams();
-      if (filters.category) params.append('category', filters.category);
-      if (filters.title) params.append('title', filters.title);
-      if (filters.sortBy) params.append('sortBy', filters.sortBy);
+  // Debounce timer ref
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-      const response = await api.get(`/api/resources?${params.toString()}`);
-      setResources(response.data);
-    } catch (error) {
-      console.error('Error fetching resources:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Debounced fetch resources
+  const debouncedFetchResources = useCallback(
+    (filterParams: typeof filters) => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+
+      debounceTimerRef.current = setTimeout(() => {
+        const fetchData = async () => {
+          setLoading(true);
+          try {
+            // Build query string from filters
+            const params = new URLSearchParams();
+            if (filterParams.category)
+              params.append('category', filterParams.category);
+            if (filterParams.title) params.append('title', filterParams.title);
+            if (filterParams.sortBy)
+              params.append('sortBy', filterParams.sortBy);
+
+            console.log(
+              'Fetching with params:',
+              Object.fromEntries(params.entries())
+            );
+
+            const response = await api.get(
+              `/api/resources?${params.toString()}`
+            );
+            setResources(response.data);
+          } catch (error) {
+            console.error('Error fetching resources:', error);
+            if (axios.isAxiosError(error)) {
+              const axiosError = error as AxiosError<{ message?: string }>;
+              if (axiosError.response) {
+                setError(
+                  axiosError.response.data?.message ||
+                    `Failed to fetch resources: ${axiosError.response.status}`
+                );
+              } else if (axiosError.request) {
+                setError('No response received. Please check your connection.');
+              } else {
+                setError(`Request error: ${axiosError.message}`);
+              }
+            } else {
+              setError('An unexpected error occurred');
+            }
+          } finally {
+            setLoading(false);
+          }
+        };
+
+        fetchData();
+      }, 300); // 300ms debounce
+    },
+    []
+  );
 
   useEffect(() => {
-    fetchResources();
-  }, [filters]);
+    debouncedFetchResources(filters);
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, [filters, debouncedFetchResources]);
 
   // Update canEdit function to match the resource structure
   const canEdit = (resource: Resource) => {
@@ -105,12 +154,12 @@ const ResourcesForWomen: React.FC = () => {
     }
   };
 
-  const handleFilterChange = (newFilters: {
-    category: string;
-    title: string;
-    sortBy: string;
-  }) => {
-    setFilters(newFilters);
+  const handleFilterChange = (filters: FilterOptions) => {
+    setFilters({
+      category: filters.category || '',
+      title: filters.title || '',
+      sortBy: filters.sortBy || 'newest',
+    });
   };
 
   return (
@@ -118,7 +167,6 @@ const ResourcesForWomen: React.FC = () => {
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
-          search
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold text-purple-900">
               Resources for Women
@@ -218,6 +266,7 @@ const ResourcesForWomen: React.FC = () => {
           )}
         </div>
       </main>
+      <Footer /> {/* Add the Footer component here */}
     </div>
   );
 };

@@ -4,14 +4,15 @@ import {
   getResourceById,
   createResource,
   updateResource,
-  deleteResource
+  deleteResource,
+  getResources
 } from '../controllers/resourceController.js';
 import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
 // Public routes
-router.get('/', getAllResources);
+router.get('/', getResources);
 router.get('/:id', getResourceById);
 
 // Protected routes - require authentication

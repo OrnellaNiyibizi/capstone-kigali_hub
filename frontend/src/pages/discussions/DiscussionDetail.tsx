@@ -8,8 +8,8 @@ import {
 } from '../../services/discussionService';
 import { Discussion, Comment } from '../../types/Discussion';
 import { useAuth } from '../../context/AuthContext';
-import Header from '../../components/homepage/Header';
-import Footer from '../../components/homepage/Footer';
+import Header from '../../components/common/Header';
+import Footer from '../../components/common/Footer';
 
 const DiscussionDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
