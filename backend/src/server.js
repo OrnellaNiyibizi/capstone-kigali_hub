@@ -21,7 +21,7 @@ const FRONTEND_URL = process.env.FRONTEND_URL;
 app.use(cors({
   origin: [
     'http://localhost:5173',  // Local development
-    FRONTEND_URL  // Production frontend
+    process.env.FRONTEND_URL  // Production frontend
   ],
   credentials: true
 }));
