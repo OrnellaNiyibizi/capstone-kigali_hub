@@ -1,4 +1,5 @@
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
+import api from './api';
 import { Discussion } from '../types/Discussion';
 
 // Using relative path for API to work with Vite proxy
@@ -7,7 +8,7 @@ const API_URL = '/api/discussions';
 export const fetchDiscussions = async (category?: string): Promise<Discussion[]> => {
   try {
     const url = category ? `${API_URL}?category=${category}` : API_URL;
-    const response = await axios.get(url);
+    const response = await api.get(url);
     return response.data;
   } catch (error: unknown) {
     const axiosError = error as AxiosError<{ message?: string }>;
@@ -19,7 +20,7 @@ export const fetchDiscussions = async (category?: string): Promise<Discussion[]>
 
 export const fetchDiscussion = async (id: string): Promise<Discussion> => {
   try {
-    const response = await axios.get(`${API_URL}/${id}`);
+    const response = await api.get(`${API_URL}/${id}`);
     return response.data;
   } catch (error: unknown) {
     const axiosError = error as AxiosError<{ message?: string }>;
@@ -34,7 +35,7 @@ export const createDiscussion = async (
   token: string
 ): Promise<Discussion> => {
   try {
-    const response = await axios.post(API_URL, discussionData, {
+    const response = await api.post(API_URL, discussionData, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -55,7 +56,7 @@ export const updateDiscussion = async (
   token: string
 ): Promise<Discussion> => {
   try {
-    const response = await axios.put(`${API_URL}/${id}`, discussionData, {
+    const response = await api.put(`${API_URL}/${id}`, discussionData, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -72,7 +73,7 @@ export const updateDiscussion = async (
 
 export const deleteDiscussion = async (id: string, token: string): Promise<void> => {
   try {
-    await axios.delete(`${API_URL}/${id}`, {
+    await api.delete(`${API_URL}/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -91,7 +92,7 @@ export const addComment = async (
   token: string
 ): Promise<Discussion> => {
   try {
-    const response = await axios.post(
+    const response = await api.post(
       `${API_URL}/${discussionId}/comments`,
       { content },
       {
@@ -116,7 +117,7 @@ export const deleteComment = async (
   token: string
 ): Promise<void> => {
   try {
-    await axios.delete(`${API_URL}/${discussionId}/comments/${commentId}`, {
+    await api.delete(`${API_URL}/${discussionId}/comments/${commentId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

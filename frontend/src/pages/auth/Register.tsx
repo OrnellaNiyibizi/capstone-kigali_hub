@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios, { AxiosError } from 'axios';
+import api from '../../services/api';
 
 const Register: React.FC = () => {
   const [name, setName] = useState('');
@@ -16,28 +18,41 @@ const Register: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/users/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, password }),
+      // Replace fetch with axios
+      await api.post('/api/users/register', {
+        name,
+        email,
+        password,
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Registration failed');
-      }
 
       // Successfully registered
       navigate('/login', {
         state: { message: 'Registration successful! Please log in.' },
       });
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'An unexpected error occurred'
-      );
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<{
+          message?: string;
+          error?: string;
+        }>;
+        if (axiosError.response) {
+          // Server responded with error status
+          setError(
+            axiosError.response.data?.message ||
+              axiosError.response.data?.error ||
+              `Registration failed: ${axiosError.response.status}`
+          );
+        } else if (axiosError.request) {
+          // Request made but no response received
+          setError('No response from server. Please check your connection.');
+        } else {
+          // Error setting up request
+          setError(`Request error: ${axiosError.message}`);
+        }
+      } else {
+        // Handle non-Axios errors
+        setError('An unexpected error occurred');
+      }
     } finally {
       setLoading(false);
     }

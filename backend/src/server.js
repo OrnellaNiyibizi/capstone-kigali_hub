@@ -14,9 +14,17 @@ import errorHandler from './middleware/errorHandler.js';
 dotenv.config();
 
 const app = express();
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 // Middleware
-app.use(cors());
+// In your backend CORS configuration
+app.use(cors({
+  origin: [
+    'http://localhost:5173',  // Local development
+    'https://your-frontend-domain.vercel.app'  // Production frontend
+  ],
+  credentials: true
+}));
 app.use(bodyParser.json());
 
 // Fix deprecation warnings

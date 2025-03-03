@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios, { AxiosError } from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import Header from '../../components/homepage/Header';
+import Footer from '../../components/homepage/Footer';
+import api from '../../services/api';
 
 const AddEditResource: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
@@ -22,22 +25,31 @@ const AddEditResource: React.FC = () => {
   useEffect(() => {
     if (isEditing) {
       setLoading(true);
-      fetch(`http://localhost:3000/api/resources/${id}`)
+
+      axios
+        .get(`/api/resources/${id}`)
         .then((response) => {
-          if (!response.ok) {
-            throw new Error('Failed to fetch resource');
-          }
-          return response.json();
-        })
-        .then((data) => {
+          const data = response.data;
           setTitle(data.title);
           setDescription(data.description);
           setCategory(data.category);
           setUrl(data.url || '');
           setImageUrl(data.imageUrl || '');
         })
-        .catch((err) => {
-          setError(err.message);
+        .catch((error) => {
+          if (axios.isAxiosError(error)) {
+            const axiosError = error as AxiosError<{
+              message?: string;
+              error?: string;
+            }>;
+            setError(
+              axiosError.response?.data?.message ||
+                axiosError.response?.data?.error ||
+                'Failed to fetch resource'
+            );
+          } else {
+            setError('An unexpected error occurred');
+          }
         })
         .finally(() => {
           setLoading(false);
@@ -60,25 +72,18 @@ const AddEditResource: React.FC = () => {
     };
 
     try {
-      const endpoint = isEditing
-        ? `http://localhost:3000/api/resources/${id}`
-        : 'http://localhost:3000/api/resources';
+      const endpoint = isEditing ? `/api/resources/${id}` : '/api/resources';
+      const method = isEditing ? 'put' : 'post';
 
-      const method = isEditing ? 'PUT' : 'POST';
-
-      const response = await fetch(endpoint, {
+      await axios({
         method,
+        url: endpoint,
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(resourceData),
+        data: resourceData,
       });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || 'Failed to save resource');
-      }
 
       setSuccess(
         isEditing
@@ -90,10 +95,26 @@ const AddEditResource: React.FC = () => {
       setTimeout(() => {
         navigate('/resources');
       }, 1500);
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'An unexpected error occurred'
-      );
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<{
+          message?: string;
+          error?: string;
+        }>;
+        if (axiosError.response) {
+          setError(
+            axiosError.response.data?.message ||
+              axiosError.response.data?.error ||
+              `Failed to save resource: ${axiosError.response.status}`
+          );
+        } else if (axiosError.request) {
+          setError('No response received. Please check your connection.');
+        } else {
+          setError(`Request error: ${axiosError.message}`);
+        }
+      } else {
+        setError('An unexpected error occurred');
+      }
     } finally {
       setLoading(false);
     }
@@ -108,20 +129,11 @@ const AddEditResource: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/resources/${id}`,
-        {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || 'Failed to delete resource');
-      }
+      await api.delete(`/api/resources/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setSuccess('Resource deleted successfully!');
 
@@ -129,10 +141,26 @@ const AddEditResource: React.FC = () => {
       setTimeout(() => {
         navigate('/resources');
       }, 1500);
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'An unexpected error occurred'
-      );
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<{
+          message?: string;
+          error?: string;
+        }>;
+        if (axiosError.response) {
+          setError(
+            axiosError.response.data?.message ||
+              axiosError.response.data?.error ||
+              `Failed to delete resource: ${axiosError.response.status}`
+          );
+        } else if (axiosError.request) {
+          setError('No response received. The resource may still be deleted.');
+        } else {
+          setError(`Request error: ${axiosError.message}`);
+        }
+      } else {
+        setError('An unexpected error occurred');
+      }
     } finally {
       setLoading(false);
     }
@@ -268,6 +296,7 @@ const AddEditResource: React.FC = () => {
           </form>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios, { AxiosError } from 'axios';
+import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 
 const Login: React.FC = () => {
@@ -17,32 +19,46 @@ const Login: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+      // Use axios instead of fetch with relative URL to work with Vite proxy
+      const response = await api.post('/api/users/login', {
+        email,
+        password,
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
-
       // Successfully logged in
-      login(data.token, {
-        id: data.userId,
-        name: data.name,
-        email: data.email,
+      // Axios automatically parses JSON, so we can use response.data directly
+      login(response.data.token, {
+        id: response.data.userId,
+        name: response.data.name,
+        email: response.data.email,
       });
 
       navigate('/profile');
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'An unexpected error occurred'
-      );
+    } catch (error: unknown) {
+      // Proper axios error handling
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<{
+          message?: string;
+          error?: string;
+        }>;
+        if (axiosError.response) {
+          // Server responded with error status
+          setError(
+            axiosError.response.data?.message ||
+              axiosError.response.data?.error ||
+              `Login failed: ${axiosError.response.status}`
+          );
+        } else if (axiosError.request) {
+          // Request made but no response received
+          setError('No response from server. Please check your connection.');
+        } else {
+          // Error setting up request
+          setError(`Request error: ${axiosError.message}`);
+        }
+      } else {
+        // Handle non-Axios errors
+        setError('An unexpected error occurred');
+      }
     } finally {
       setLoading(false);
     }

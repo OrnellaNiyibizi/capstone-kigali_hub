@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
+import axios, { AxiosError } from 'axios'; // Add AxiosError type
 import { useAuth } from '../context/AuthContext';
 import Header from '../components/homepage/Header';
 import Footer from '../components/homepage/Footer';
+import api from '../services/api';
 
 interface Resource {
   _id: string;
@@ -14,6 +16,10 @@ interface Resource {
   createdBy: string;
   createdAt: string;
   updatedAt: string;
+  user?: {
+    email: string;
+    name: string;
+  };
 }
 
 const Profile: React.FC = () => {
@@ -46,14 +52,8 @@ const Profile: React.FC = () => {
   const fetchUserResources = async () => {
     setLoadingResources(true);
     try {
-      // Get all resources
-      const response = await fetch('http://localhost:3000/api/resources');
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch resources');
-      }
-
-      const allResources = await response.json();
+      const response = await api.get('/api/resources');
+      const allResources = response.data;
 
       const myResources = allResources.filter(
         (resource: Resource) =>
@@ -61,10 +61,26 @@ const Profile: React.FC = () => {
       );
 
       setUserResources(myResources);
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'An unexpected error occurred'
-      );
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<{ message?: string }>;
+        if (axiosError.response) {
+          // Server responded with error status
+          setError(
+            axiosError.response.data?.message ||
+              `Server error: ${axiosError.response.status}`
+          );
+        } else if (axiosError.request) {
+          // Request made but no response received
+          setError('No response received. Please check your connection.');
+        } else {
+          // Error setting up request
+          setError(`Request error: ${axiosError.message}`);
+        }
+      } else {
+        // Handle non-Axios errors
+        setError('An unexpected error occurred');
+      }
     } finally {
       setLoadingResources(false);
     }
@@ -76,30 +92,34 @@ const Profile: React.FC = () => {
     setError('');
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/users/${user?.id}`,
+      await api.put(
+        `/api/users/${user?.id}`,
+        { name },
         {
-          method: 'PUT',
           headers: {
-            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ name }),
         }
       );
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Update failed');
-      }
-
       setMessage('Profile updated successfully');
       setIsEditing(false);
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'An unexpected error occurred'
-      );
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<{ message?: string }>;
+        if (axiosError.response) {
+          setError(
+            axiosError.response.data?.message ||
+              `Update failed: ${axiosError.response.status}`
+          );
+        } else if (axiosError.request) {
+          setError('No response received. Please try again.');
+        } else {
+          setError(`Request failed: ${axiosError.message}`);
+        }
+      } else {
+        setError('Update failed due to an unexpected error');
+      }
     }
   };
 
@@ -114,39 +134,34 @@ const Profile: React.FC = () => {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/resources/${resourceId}`,
-        {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || 'Failed to delete resource');
-      }
+      await api.delete(`/api/resources/${resourceId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setMessage('Resource deleted successfully!');
-
-      // Remove the deleted resource from state
       setUserResources(
         userResources.filter((resource) => resource._id !== resourceId)
       );
-
-      // Clear success message after 3 seconds
-      setTimeout(() => {
-        setMessage('');
-      }, 3000);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-
-      // Clear error message after 3 seconds
-      setTimeout(() => {
-        setError('');
-      }, 3000);
+      setTimeout(() => setMessage(''), 3000);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<{ message?: string }>;
+        if (axiosError.response) {
+          setError(
+            axiosError.response.data?.message ||
+              `Delete failed: ${axiosError.response.status}`
+          );
+        } else if (axiosError.request) {
+          setError('No response received. The resource may still be deleted.');
+        } else {
+          setError(`Delete request failed: ${axiosError.message}`);
+        }
+      } else {
+        setError('Failed to delete resource due to an unexpected error');
+      }
+      setTimeout(() => setError(''), 3000);
     }
   };
 

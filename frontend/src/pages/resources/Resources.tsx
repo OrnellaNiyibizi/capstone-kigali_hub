@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Header from '../../components/homepage/Header';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import ResourceFilters from '../../components/resources/ResourceFilters';
+import api from '../../services/api';
 
 interface Resource {
   _id: string;
@@ -41,7 +42,7 @@ const ResourcesForWomen: React.FC = () => {
       if (filters.title) params.append('title', filters.title);
       if (filters.sortBy) params.append('sortBy', filters.sortBy);
 
-      const response = await axios.get(`/api/resources?${params.toString()}`);
+      const response = await api.get(`/api/resources?${params.toString()}`);
       setResources(response.data);
     } catch (error) {
       console.error('Error fetching resources:', error);
@@ -70,7 +71,7 @@ const ResourcesForWomen: React.FC = () => {
 
     try {
       // Using axios instead of fetch
-      await axios.delete(`/api/resources/${resourceId}`, {
+      await api.delete(`/api/resources/${resourceId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -80,13 +81,35 @@ const ResourcesForWomen: React.FC = () => {
       setResources(resources.filter((resource) => resource._id !== resourceId));
 
       setTimeout(() => setSuccessMessage(''), 3000);
-    } catch (error) {
-      setError(error.response?.data?.message || 'Failed to delete resource');
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<{ message?: string }>;
+        if (axiosError.response) {
+          // Server responded with an error status
+          setError(
+            axiosError.response.data?.message ||
+              `Delete failed: ${axiosError.response.status}`
+          );
+        } else if (axiosError.request) {
+          // Request was made but no response received
+          setError('No response from server. Please check your connection.');
+        } else {
+          // Error configuring the request
+          setError(`Request error: ${axiosError.message}`);
+        }
+      } else {
+        // Handle non-Axios errors
+        setError('An unexpected error occurred');
+      }
       setTimeout(() => setError(''), 3000);
     }
   };
 
-  const handleFilterChange = (newFilters) => {
+  const handleFilterChange = (newFilters: {
+    category: string;
+    title: string;
+    sortBy: string;
+  }) => {
     setFilters(newFilters);
   };
 
