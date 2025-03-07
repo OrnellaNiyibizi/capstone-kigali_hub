@@ -206,54 +206,131 @@ const ResourcesForWomen: React.FC = () => {
               {resources.map((resource) => (
                 <div
                   key={resource._id}
-                  className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                  {resource.imageUrl && (
-                    <div className="h-48 overflow-hidden">
-                      <img
-                        src={resource.imageUrl}
-                        alt={resource.title}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.onerror = null;
-                          target.src =
-                            'https://via.placeholder.com/400x200?text=No+Image';
-                        }}
-                      />
+                  className="bg-white rounded-lg overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full">
+                  <Link to={`/resources/${resource._id}`} className="block">
+                    {resource.imageUrl ? (
+                      <div className="relative h-52 overflow-hidden">
+                        <img
+                          src={resource.imageUrl}
+                          alt={resource.title}
+                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.onerror = null;
+                            target.src =
+                              'https://via.placeholder.com/400x200?text=No+Image';
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30 opacity-0 hover:opacity-100 transition-opacity"></div>
+                      </div>
+                    ) : (
+                      <div className="h-40 bg-purple-50 flex items-center justify-center">
+                        <span className="text-purple-300 text-5xl font-light">
+                          {resource.title.charAt(0)}
+                        </span>
+                      </div>
+                    )}
+                  </Link>
+
+                  <div className="p-5 flex flex-col flex-grow">
+                    <div className="mb-2 flex items-center">
+                      <span className="inline-block bg-purple-100 text-purple-800 text-xs font-semibold px-3 py-1 rounded-full">
+                        {resource.category}
+                      </span>
+                      <span className="ml-auto text-xs text-gray-400">
+                        {new Date(resource.createdAt).toLocaleDateString()}
+                      </span>
                     </div>
-                  )}
-                  <div className="p-5">
-                    <span className="inline-block bg-purple-100 text-purple-800 text-xs font-semibold px-2 py-1 rounded-full mb-2">
-                      {resource.category}
-                    </span>
-                    <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                      {resource.title}
-                    </h2>
-                    <p className="text-gray-600 mb-4 line-clamp-3">
+
+                    <Link
+                      to={`/resources/${resource._id}`}
+                      className="block mb-2">
+                      <h2 className="text-xl font-semibold text-gray-800 hover:text-purple-700 transition-colors">
+                        {resource.title}
+                      </h2>
+                    </Link>
+
+                    <p className="text-gray-600 mb-4 line-clamp-3 flex-grow">
                       {resource.description}
                     </p>
-                    <div className="flex justify-between items-center">
-                      {resource.url && (
-                        <a
-                          href={resource.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-purple-600 hover:text-purple-800">
-                          Visit Resource
-                        </a>
-                      )}
+
+                    <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center">
+                      <div className="flex items-center space-x-3">
+                        <Link
+                          to={`/resources/${resource._id}`}
+                          className="inline-flex items-center text-purple-600 hover:text-purple-800 font-medium text-sm">
+                          Details
+                          <svg
+                            className="w-4 h-4 ml-1"
+                            fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path
+                              fillRule="evenodd"
+                              d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                              clipRule="evenodd"></path>
+                          </svg>
+                        </Link>
+
+                        {resource.url && (
+                          <a
+                            href={resource.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center text-gray-500 hover:text-purple-600 text-sm">
+                            <svg
+                              className="w-4 h-4 mr-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                            </svg>
+                            Visit
+                          </a>
+                        )}
+                      </div>
+
                       {canEdit(resource) && (
                         <div className="flex space-x-3">
                           <Link
                             to={`/edit-resource/${resource._id}`}
-                            className="text-sm text-blue-600 hover:text-blue-800">
+                            className="text-sm text-blue-600 hover:text-blue-800 inline-flex items-center">
+                            <svg
+                              className="w-3.5 h-3.5 mr-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                            </svg>
                             Edit
                           </Link>
+
                           <button
                             onClick={() =>
                               handleDelete(resource._id, resource.title)
                             }
-                            className="text-sm text-red-600 hover:text-red-800">
+                            className="text-sm text-red-600 hover:text-red-800 inline-flex items-center">
+                            <svg
+                              className="w-3.5 h-3.5 mr-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
                             Delete
                           </button>
                         </div>
