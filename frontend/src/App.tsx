@@ -14,6 +14,7 @@ import './App.css';
 import ProtectedRoute from './context/ProtectedRoute';
 import AddEditResource from './pages/resources/AddEditResource';
 import CommunityForum from './pages/discussions/Community';
+import OfflineIndicator from './components/common/OfflineIndicator';
 
 const App: React.FC = () => {
   return (
@@ -72,6 +73,7 @@ const App: React.FC = () => {
               />
             </Routes>
           </main>
+          <OfflineIndicator />
         </div>
       </Router>
     </AuthProvider>

@@ -3,10 +3,12 @@ import jwt from 'jsonwebtoken';
 import config from '../utils/config.js';
 
 // Get all users
-export const getUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
   try {
-    // Don't return password in the response
     const users = await User.find().select('-password');
+
+    // Add cache control headers - moderate caching for user lists
+    res.set('Cache-Control', 'public, max-age=600'); // 10 minutes
     res.json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -18,6 +20,9 @@ export const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select('-password');
     if (!user) return res.status(404).json({ message: 'User not found' });
+
+    // Add cache control headers
+    res.set('Cache-Control', 'public, max-age=300'); // 5 minutes
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -120,6 +125,8 @@ export const loginUser = async (req, res) => {
       { expiresIn: '24h' } // Token expires in 24 hours
     );
 
+    // Prevent caching of authentication responses
+    res.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
     res.status(200).json({
       message: 'Login successful',
       userId: user._id,
@@ -140,6 +147,9 @@ export const getUserProfile = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
+
+    // No caching for user profile
+    res.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });

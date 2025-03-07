@@ -2,13 +2,14 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import dotenv, { config } from 'dotenv';
+import dotenv from 'dotenv';
 
 // Import your routes
 import userRoutes from './routes/userRoutes.js';
 import resourceRoutes from './routes/resourceRoutes.js';
 import discussionRoutes from './routes/discussionRoutes.js';
 import errorHandler from './middleware/errorHandler.js';
+import { apiLimiter, authLimiter } from './middleware/rateLimiter.js';
 
 // Load environment variables
 dotenv.config();
@@ -19,19 +20,30 @@ const FRONTEND_URL = process.env.FRONTEND_URL;
 // Middleware
 // In your backend CORS configuration
 app.use(cors({
-  origin: '*', // Allow all origins (temporary fix)
-  credentials: true
+  origin: [
+    'http://localhost:5173',
+    'https://capstone-women-kigalihub.vercel.app'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(bodyParser.json());
 
-// Fix deprecation warnings
 mongoose.set('strictQuery', false);
 
 // Database connection
 mongoose.connect(process.env.DB_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
+
+// Apply general rate limiting to all API routes
+app.use('/api', apiLimiter);
+
+// Apply stricter rate limiting to auth routes
+app.use('/api/users/login', authLimiter);
+app.use('/api/users/register', authLimiter);
 
 // Routes
 app.use('/api/users', userRoutes);

@@ -41,6 +41,8 @@ export const getAllDiscussions = async (req, res) => {
       .populate('user', 'name email')
       .sort({ createdAt: -1 });  // Sort by newest first
 
+    // Add cache control headers - cache for 5 minutes
+    res.set('Cache-Control', 'public, max-age=300');
     res.status(200).json(discussions);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -58,6 +60,9 @@ export const getDiscussionById = async (req, res) => {
       return res.status(404).json({ message: 'Discussion not found' });
     }
 
+    // Add cache control headers - discussions with comments change frequently
+    // so use a shorter cache time
+    res.set('Cache-Control', 'public, max-age=60'); // 1 minute
     res.status(200).json(discussion);
   } catch (error) {
     res.status(500).json({ error: error.message });

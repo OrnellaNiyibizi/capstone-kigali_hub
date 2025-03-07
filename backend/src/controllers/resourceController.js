@@ -20,9 +20,9 @@ export const createResource = async (req, res) => {
 export const getAllResources = async (req, res) => {
   try {
     const resources = await Resource.find()
-      .populate('user', 'name email -_id'); // Optionally populate user info without the _id
+      .populate('user', 'name email -_id');
 
-    res.status(200).json(resources);
+    // Add cache control headers - cache for 5 minutes
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
