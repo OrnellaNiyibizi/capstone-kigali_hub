@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import {
   fetchDiscussion,
@@ -10,6 +10,7 @@ import { Discussion, Comment } from '../../types/Discussion';
 import { useAuth } from '../../context/AuthContext';
 import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
+import { FaArrowLeft, FaEdit, FaTrash, FaUser, FaClock } from 'react-icons/fa';
 
 const DiscussionDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,83 +18,105 @@ const DiscussionDetail: React.FC = () => {
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [submitting, setSubmitting] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const { isAuthenticated, user, token } = useAuth();
   const navigate = useNavigate();
+  const [deletingComments, setDeletingComments] = useState<
+    Record<string, boolean>
+  >({});
 
-  useEffect(() => {
-    const loadDiscussion = async () => {
-      if (!id) return;
+  // Load the discussion data
+  const loadDiscussion = useCallback(async () => {
+    if (!id) return;
 
-      try {
-        setLoading(true);
-        const data = await fetchDiscussion(id);
-        setDiscussion(data);
-        setError('');
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadDiscussion();
+    try {
+      setLoading(true);
+      const data = await fetchDiscussion(id);
+      setDiscussion(data);
+      setError('');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+      console.error('Error loading discussion:', err);
+    } finally {
+      setLoading(false);
+    }
   }, [id]);
 
+  useEffect(() => {
+    loadDiscussion();
+  }, [loadDiscussion]);
+
+  // Submit a comment
   const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!id || !token || !comment.trim()) return;
 
     try {
-      setSubmitting(true);
-      const updatedDiscussion = await addComment(id, comment, token);
+      setSubmitLoading(true);
+      setError('');
+
+      // Call API to add comment
+      const updatedDiscussion = await addComment(id, comment.trim(), token);
+
+      // Replace the entire discussion with the updated one from backend
       setDiscussion(updatedDiscussion);
+
+      // Clear the comment input
       setComment('');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to add comment');
+      console.error('Error adding comment:', err);
     } finally {
-      setSubmitting(false);
+      setSubmitLoading(false);
     }
   };
 
+  // Delete the entire discussion
   const handleDeleteDiscussion = async () => {
-    if (
-      !id ||
-      !token ||
-      !window.confirm('Are you sure you want to delete this discussion?')
-    )
+    if (!id || !token) return;
+
+    if (!window.confirm('Are you sure you want to delete this discussion?')) {
       return;
+    }
 
     try {
+      setLoading(true);
       await deleteDiscussion(id, token);
-      navigate('/discussions');
+      navigate('/discussions', { replace: true });
     } catch (err) {
       setError(
         err instanceof Error ? err.message : 'Failed to delete discussion'
       );
+      console.error('Error deleting discussion:', err);
+      setLoading(false);
     }
   };
 
+  // Delete a comment
   const handleDeleteComment = async (commentId: string) => {
-    if (
-      !id ||
-      !token ||
-      !window.confirm('Are you sure you want to delete this comment?')
-    )
+    if (!id || !token) return;
+
+    if (!window.confirm('Are you sure you want to delete this comment?')) {
       return;
+    }
 
     try {
-      await deleteComment(id, commentId, token);
-      // Update the discussion UI by removing the deleted comment
-      if (discussion) {
-        setDiscussion({
-          ...discussion,
-          comments: discussion.comments.filter((c) => c._id !== commentId),
-        });
-      }
+      // Set loading state for this specific comment
+      setDeletingComments((prev) => ({ ...prev, [commentId]: true }));
+
+      const updatedDiscussion = await deleteComment(id, commentId, token);
+      setDiscussion(updatedDiscussion);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete comment');
+      console.error('Error deleting comment:', err);
+    } finally {
+      // Clear loading state
+      setDeletingComments((prev) => {
+        const updated = { ...prev };
+        delete updated[commentId];
+        return updated;
+      });
     }
   };
 
@@ -108,6 +131,7 @@ const DiscussionDetail: React.FC = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  // Check if the current user can modify the discussion
   const canModifyDiscussion =
     discussion && isAuthenticated && user?.email === discussion.user?.email;
 
@@ -120,19 +144,7 @@ const DiscussionDetail: React.FC = () => {
           <Link
             to="/discussions"
             className="inline-flex items-center text-purple-600 hover:text-purple-800 mb-6">
-            <svg
-              className="w-4 h-4 mr-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
-            Back to discussions
+            <FaArrowLeft className="mr-2" /> Back to discussions
           </Link>
 
           {/* Error message */}
@@ -143,10 +155,19 @@ const DiscussionDetail: React.FC = () => {
           )}
 
           {/* Loading state */}
-          {loading ? (
+          {loading && !discussion ? (
             <div className="text-center py-10">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-purple-500 border-t-transparent"></div>
               <p className="mt-2 text-gray-600">Loading discussion...</p>
+            </div>
+          ) : error && !discussion ? (
+            <div className="bg-white rounded-lg shadow-md p-6 text-center">
+              <p className="text-red-600 mb-4">{error}</p>
+              <Link
+                to="/discussions"
+                className="inline-block text-purple-600 hover:text-purple-800">
+                View all discussions
+              </Link>
             </div>
           ) : discussion ? (
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -162,10 +183,12 @@ const DiscussionDetail: React.FC = () => {
                 </div>
 
                 <div className="mt-2 flex items-center text-sm text-gray-500">
+                  <FaUser className="mr-1" />
                   <span>
                     Posted by {discussion.user?.name || 'Unknown User'}
                   </span>
                   <span className="mx-2">•</span>
+                  <FaClock className="mr-1" />
                   <span>{formatDate(discussion.createdAt)}</span>
                 </div>
 
@@ -176,16 +199,16 @@ const DiscussionDetail: React.FC = () => {
 
                 {/* Discussion actions */}
                 {canModifyDiscussion && (
-                  <div className="mt-6 flex space-x-3">
+                  <div className="mt-6 flex space-x-4">
                     <Link
                       to={`/discussions/edit/${discussion._id}`}
-                      className="text-blue-600 hover:text-blue-800">
-                      Edit
+                      className="inline-flex items-center text-blue-600 hover:text-blue-800">
+                      <FaEdit className="mr-1" /> Edit
                     </Link>
                     <button
                       onClick={handleDeleteDiscussion}
-                      className="text-red-600 hover:text-red-800">
-                      Delete
+                      className="inline-flex items-center text-red-600 hover:text-red-800">
+                      <FaTrash className="mr-1" /> Delete
                     </button>
                   </div>
                 )}
@@ -213,13 +236,21 @@ const DiscussionDetail: React.FC = () => {
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                         required
+                        disabled={submitLoading}
                       />
                     </div>
                     <button
                       type="submit"
-                      disabled={submitting}
+                      disabled={submitLoading}
                       className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:bg-purple-400 disabled:cursor-not-allowed">
-                      {submitting ? 'Submitting...' : 'Post Comment'}
+                      {submitLoading ? (
+                        <>
+                          <span className="inline-block animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></span>
+                          Posting...
+                        </>
+                      ) : (
+                        'Post Comment'
+                      )}
                     </button>
                   </form>
                 ) : (
@@ -263,11 +294,21 @@ const DiscussionDetail: React.FC = () => {
                             </p>
                           </div>
                           {isAuthenticated &&
-                            user?.email === comment.user.email && (
+                            user?.email === comment.user?.email && (
                               <button
                                 onClick={() => handleDeleteComment(comment._id)}
-                                className="text-sm text-red-600 hover:text-red-800">
-                                Delete
+                                disabled={deletingComments[comment._id]}
+                                className="text-sm text-red-600 hover:text-red-800 inline-flex items-center">
+                                {deletingComments[comment._id] ? (
+                                  <>
+                                    <span className="animate-spin h-3 w-3 border-2 border-red-500 border-opacity-50 border-t-transparent rounded-full mr-1"></span>
+                                    Deleting...
+                                  </>
+                                ) : (
+                                  <>
+                                    <FaTrash className="mr-1" /> Delete
+                                  </>
+                                )}
                               </button>
                             )}
                         </div>

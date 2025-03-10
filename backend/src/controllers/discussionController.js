@@ -163,29 +163,60 @@ export const addComment = async (req, res) => {
 export const deleteComment = async (req, res) => {
   try {
     const { discussionId, commentId } = req.params;
+    const userId = req.user.id;
 
-    const discussion = await Discussion.findById(discussionId);
+    // Find the discussion
+    const discussion = await Discussion.findById(discussionId).populate({
+      path: 'comments.user',
+      select: 'name email'
+    }).populate('user', 'name email');
 
     if (!discussion) {
-      return res.status(404).json({ message: 'Discussion not found' });
+      return res.status(404).json({ error: 'Discussion not found' });
     }
 
-    const comment = discussion.comments.id(commentId);
+    // Find the comment
+    const commentIndex = discussion.comments.findIndex(
+      comment => comment._id.toString() === commentId
+    );
 
-    if (!comment) {
-      return res.status(404).json({ message: 'Comment not found' });
+    if (commentIndex === -1) {
+      return res.status(404).json({ error: 'Comment not found' });
     }
 
-    // Check if user owns this comment or the discussion
-    if (comment.user.toString() !== req.user.id && discussion.user.toString() !== req.user.id) {
-      return res.status(403).json({ message: 'Not authorized to delete this comment' });
+    const comment = discussion.comments[commentIndex];
+
+    // Check if the user is authorized to delete the comment
+    // (either the comment author or discussion author)
+    if (
+      comment.user._id.toString() !== userId &&
+      discussion.user._id.toString() !== userId
+    ) {
+      return res.status(403).json({
+        error: 'You are not authorized to delete this comment'
+      });
     }
 
-    comment.remove();
+    // Remove the comment
+    discussion.comments.splice(commentIndex, 1);
     await discussion.save();
 
-    res.status(200).json({ message: 'Comment deleted successfully' });
+    // Return the updated discussion with populated user fields
+    const updatedDiscussion = await Discussion.findById(discussionId)
+      .populate({
+        path: 'comments.user',
+        select: 'name email'
+      })
+      .populate('user', 'name email');
+
+    res.json({
+      message: 'Comment deleted successfully',
+      discussion: updatedDiscussion
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error deleting comment:', error);
+    res.status(500).json({
+      error: 'An error occurred while deleting the comment'
+    });
   }
 };
