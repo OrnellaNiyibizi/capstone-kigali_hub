@@ -63,9 +63,7 @@ const ResourcesForWomen: React.FC = () => {
               Object.fromEntries(params.entries())
             );
 
-            const response = await api.get(
-              `/api/resources?${params.toString()}`
-            );
+            const response = await api.get(`/resources?${params.toString()}`);
             setResources(response.data);
           } catch (error) {
             console.error('Error fetching resources:', error);
@@ -120,7 +118,7 @@ const ResourcesForWomen: React.FC = () => {
 
     try {
       // Using axios instead of fetch
-      await api.delete(`/api/resources/${resourceId}`, {
+      await api.delete(`/resources/${resourceId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -42,7 +42,7 @@ const ResourceDetail: React.FC = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/resources/${id}`
+          `${import.meta.env.VITE_API_URL}/resources/${id}`
         );
         setResource(response.data);
         setError('');

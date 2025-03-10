@@ -194,7 +194,7 @@ const DiscussionDetail: React.FC = () => {
               {/* Comments section */}
               <div className="p-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-6">
-                  Comments ({discussion.comments.length})
+                  Comments ({discussion.comments?.length || 0})
                 </h2>
 
                 {/* Comment form */}
@@ -238,7 +238,7 @@ const DiscussionDetail: React.FC = () => {
 
                 {/* Comments list */}
                 <div className="space-y-6">
-                  {discussion.comments.length === 0 ? (
+                  {!discussion.comments || discussion.comments.length === 0 ? (
                     <p className="text-gray-500 text-center py-6">
                       No comments yet. Be the first to comment!
                     </p>

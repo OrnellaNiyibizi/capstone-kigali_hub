@@ -28,7 +28,7 @@ const AddEditResource: React.FC = () => {
       setLoading(true);
 
       axios
-        .get(`/api/resources/${id}`)
+        .get(`/resources/${id}`)
         .then((response) => {
           const data = response.data;
           setTitle(data.title);
@@ -73,10 +73,10 @@ const AddEditResource: React.FC = () => {
     };
 
     try {
-      const endpoint = isEditing ? `/api/resources/${id}` : '/api/resources';
+      const endpoint = isEditing ? `/resources/${id}` : '/resources';
       const method = isEditing ? 'put' : 'post';
 
-      await axios({
+      await api({
         method,
         url: endpoint,
         headers: {
@@ -130,7 +130,7 @@ const AddEditResource: React.FC = () => {
     setLoading(true);
 
     try {
-      await api.delete(`/api/resources/${id}`, {
+      await api.delete(`/resources/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

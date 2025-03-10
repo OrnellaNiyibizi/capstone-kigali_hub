@@ -52,7 +52,7 @@ const Profile: React.FC = () => {
   const fetchUserResources = async () => {
     setLoadingResources(true);
     try {
-      const response = await api.get('/api/resources');
+      const response = await api.get('/resources');
       const allResources = response.data;
 
       const myResources = allResources.filter(
@@ -93,7 +93,7 @@ const Profile: React.FC = () => {
 
     try {
       await api.put(
-        `/api/users/${user?.id}`,
+        `/users/${user?.id}`,
         { name },
         {
           headers: {
@@ -134,7 +134,7 @@ const Profile: React.FC = () => {
     }
 
     try {
-      await api.delete(`/api/resources/${resourceId}`, {
+      await api.delete(`/resources/${resourceId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

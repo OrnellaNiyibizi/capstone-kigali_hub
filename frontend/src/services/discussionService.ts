@@ -3,7 +3,7 @@ import api from './api';
 import { Discussion } from '../types/Discussion';
 
 // Using relative path for API to work with Vite proxy
-const API_URL = '/api/discussions';
+const API_URL = '/discussions';
 
 export const fetchDiscussions = async (category?: string): Promise<Discussion[]> => {
   try {

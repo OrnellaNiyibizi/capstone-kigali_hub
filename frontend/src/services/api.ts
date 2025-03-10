@@ -15,12 +15,11 @@ window.addEventListener('offline', () => {
   console.log('Offline mode activated');
 });
 
-// Determine the API base URL based on environment
 const getBaseUrl = () => {
   if (import.meta.env.NODE_ENV === 'development') {
-    return '/api';
+    return '';
   }
-  return import.meta.env.VITE_API_URL || 'https://capstone-kigali-hub-backend.vercel.app';
+  return import.meta.env.VITE_API_URL || '';
 };
 
 // Create an axios instance with the appropriate base URL
@@ -28,7 +27,6 @@ const api = axios.create({
   baseURL: getBaseUrl(),
 });
 
-// Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -36,11 +34,13 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
-  },
-  (error) => {
-    return Promise.reject(error);
   }
 );
+// Add to api.ts
+api.interceptors.request.use(request => {
+  console.log('Request:', request.method, request.url);
+  return request;
+});
 
 // Response interceptor to handle offline scenarios
 api.interceptors.response.use(

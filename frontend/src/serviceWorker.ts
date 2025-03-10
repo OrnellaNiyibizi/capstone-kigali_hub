@@ -22,7 +22,7 @@ precacheAndRoute(self.__WB_MANIFEST);
 
 // Cache resources API responses for offline access
 registerRoute(
-  ({ url }) => url.pathname.startsWith('/api/resources'),
+  ({ url }) => url.pathname.startsWith('/resources'),
   new NetworkFirst({
     cacheName: 'resources-cache',
     plugins: [
@@ -36,7 +36,7 @@ registerRoute(
 
 // Cache discussions API responses
 registerRoute(
-  ({ url }) => url.pathname.startsWith('/api/discussions'),
+  ({ url }) => url.pathname.startsWith('/discussions'),
   new NetworkFirst({
     cacheName: 'discussions-cache',
     plugins: [
@@ -87,7 +87,7 @@ const discussionsQueue = new BackgroundSyncPlugin('discussions-queue', {
 });
 
 registerRoute(
-  ({ url, request }) => url.pathname.startsWith('/api/resources') &&
+  ({ url, request }) => url.pathname.startsWith('/resources') &&
     (request.method === 'POST' || request.method === 'PUT' || request.method === 'DELETE'),
   new NetworkOnly({
     plugins: [resourcesQueue]
@@ -96,7 +96,7 @@ registerRoute(
 );
 
 registerRoute(
-  ({ url, request }) => url.pathname.startsWith('/api/discussions') &&
+  ({ url, request }) => url.pathname.startsWith('/discussions') &&
     (request.method === 'POST' || request.method === 'PUT' || request.method === 'DELETE'),
   new NetworkOnly({
     plugins: [discussionsQueue]

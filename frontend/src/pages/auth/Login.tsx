@@ -20,7 +20,7 @@ const Login: React.FC = () => {
 
     try {
       // Use axios instead of fetch with relative URL to work with Vite proxy
-      const response = await api.post('/api/users/login', {
+      const response = await api.post('/users/login', {
         email,
         password,
       });
