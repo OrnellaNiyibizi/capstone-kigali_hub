@@ -43,7 +43,7 @@ const AddEditResource: React.FC = () => {
 
   // Geolocation state
   const [marker, setMarker] = useState<google.maps.LatLngLiteral>(
-    { lat: -1.94407, lng: 30.0619 } // Default to Kigali coordinates
+    { lat: -1.94407, lng: 30.0619 } // Default to Rwanda coordinates
   );
   const [geolocating, setGeolocating] = useState(false);
   const [geoError, setGeoError] = useState('');

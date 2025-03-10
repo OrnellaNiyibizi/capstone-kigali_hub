@@ -8,7 +8,7 @@ const Objective: React.FC = () => {
       </h2>
       <div className="bg-white p-8 rounded-xl shadow-sm">
         <p className="text-lg text-gray-700 leading-relaxed">
-          We aim to empower women in Kigali by providing access to vital
+          We aim to empower women in Rwanda by providing access to vital
           resources, educational opportunities, and a supportive community.
           <br />
           <br />

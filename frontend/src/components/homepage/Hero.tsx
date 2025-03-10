@@ -7,11 +7,11 @@ const Hero: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         <div className="space-y-6">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-purple-900 leading-tight">
-            Empowering Women in Kigali
+            Empowering Women in Rwanda
           </h1>
           <p className="text-lg text-gray-700 leading-relaxed">
             Join our platform to access resources, connect with events, and find
-            job opportunities tailored for women in Kigali. We're here to
+            job opportunities tailored for women in Rwanda. We're here to
             support your personal and professional growth.
           </p>
           <div className="flex flex-wrap gap-4 pt-2">

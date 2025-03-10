@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4">Kigali Women Hub</h3>
+            <h3 className="text-xl font-semibold mb-4">Rwanda Women Hub</h3>
             <p className="text-purple-200">
               Empowering women in Rwanda through resources, community, and
               support.
@@ -87,7 +87,7 @@ const Footer: React.FC = () => {
         </div>
         <div className="mt-8 pt-8 border-t border-purple-500 text-center">
           <p>
-            © {new Date().getFullYear()} Kigali Women Hub. All rights reserved.
+            © {new Date().getFullYear()} Rwanda Women Hub. All rights reserved.
           </p>
         </div>
       </div>

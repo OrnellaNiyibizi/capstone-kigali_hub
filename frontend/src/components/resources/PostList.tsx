@@ -31,9 +31,9 @@ const posts: Post[] = [
     linkHref: '#',
   },
   {
-    title: 'Job Fair: Kigali Job Expo',
+    title: 'Job Fair: Rwanda Job Expo',
     description:
-      'Attend the Kigali Job Expo to meet potential employers and explore job openings across various sectors.',
+      'Attend the Rwanda Job Expo to meet potential employers and explore job openings across various sectors.',
     linkText: 'Find Out More',
     linkHref: '#',
   },

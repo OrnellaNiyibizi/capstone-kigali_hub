@@ -9,7 +9,7 @@ const CallToAction: React.FC = () => {
       </h2>
       <p className="text-lg text-gray-700 mb-8">
         Get access to exclusive resources, networking events, and job
-        opportunities designed specifically for women in Kigali.
+        opportunities designed specifically for women in Rwanda.
       </p>
       <div className="flex flex-col sm:flex-row justify-center gap-4">
         <Link

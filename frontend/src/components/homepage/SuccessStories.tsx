@@ -12,7 +12,7 @@ const stories: Story[] = [
     name: 'Jane Doe',
     role: 'Software Developer',
     content:
-      'Thanks to Kigali Women Hub, I found a job that I love and met amazing women who inspire me every day! The resources and networking opportunities have been invaluable to my career growth.',
+      'Thanks to Rwanda Women Hub, I found a job that I love and met amazing women who inspire me every day! The resources and networking opportunities have been invaluable to my career growth.',
     image: 'https://randomuser.me/api/portraits/women/44.jpg',
   },
   {

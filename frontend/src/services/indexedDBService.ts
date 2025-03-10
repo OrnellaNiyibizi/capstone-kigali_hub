@@ -1,5 +1,5 @@
 // src/services/indexedDBService.ts
-export const DB_NAME = 'kigali-women-hub-db';
+export const DB_NAME = 'Rwanda-women-hub-db';
 export const DB_VERSION = 1;
 
 interface DBStores {

@@ -16,9 +16,9 @@ export default defineConfig({
       injectRegister: 'auto',
       registerType: 'autoUpdate',
       manifest: {
-        name: 'Kigali Women Hub',
+        name: 'Rwanda Women Hub',
         short_name: 'KWH',
-        description: 'Resources and community for women in Kigali',
+        description: 'Resources and community for women in Rwanda',
         theme_color: '#8B5CF6', // Purple color from your UI
         icons: [
           {

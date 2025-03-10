@@ -7,7 +7,7 @@ import SuccessStories from '../components/homepage/SuccessStories.tsx';
 import CallToAction from '../components/homepage/CallToAction.tsx';
 import Footer from '../components/common/Footer.tsx';
 
-const KigaliWomenHub: React.FC = () => {
+const RwandaWomenHub: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-gray-100">
       <Header />
@@ -39,4 +39,4 @@ const KigaliWomenHub: React.FC = () => {
   );
 };
 
-export default KigaliWomenHub;
+export default RwandaWomenHub;
