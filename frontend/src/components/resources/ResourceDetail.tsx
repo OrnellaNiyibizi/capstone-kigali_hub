@@ -10,8 +10,17 @@ import {
   FaArrowLeft,
   FaEdit,
   FaShare,
+  FaMapMarkerAlt,
+  FaPhone,
+  FaBuilding,
 } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
+import {
+  APIProvider,
+  Map,
+  AdvancedMarker,
+  Pin,
+} from '@vis.gl/react-google-maps';
 
 interface Resource {
   _id: string;
@@ -21,6 +30,11 @@ interface Resource {
   link: string;
   imageUrl?: string;
   tags: string[];
+  businessName?: string;
+  businessAddress?: string;
+  phoneNumber?: string;
+  latitude?: number;
+  longitude?: number;
   createdAt: string;
   user: {
     name: string;
@@ -239,6 +253,87 @@ const ResourceDetail: React.FC = () => {
                       #{tag}
                     </span>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* Business info section */}
+            {(resource.businessName ||
+              resource.businessAddress ||
+              resource.phoneNumber) && (
+              <div className="mt-8 p-6 bg-purple-50 rounded-lg">
+                <h3 className="text-lg font-semibold text-purple-900 mb-3 flex items-center">
+                  <FaBuilding className="mr-2 text-purple-500" />
+                  Business Information
+                </h3>
+
+                {resource.businessName && (
+                  <div className="mb-2 flex items-center">
+                    <span className="font-medium w-24 text-gray-700">
+                      Name:
+                    </span>
+                    <span>{resource.businessName}</span>
+                  </div>
+                )}
+
+                {resource.businessAddress && (
+                  <div className="mb-2 flex items-center">
+                    <FaMapMarkerAlt className="mr-2 text-purple-400" />
+                    <span>{resource.businessAddress}</span>
+                  </div>
+                )}
+
+                {resource.phoneNumber && (
+                  <div className="mb-2 flex items-center">
+                    <FaPhone className="mr-2 text-purple-400" />
+                    <a
+                      href={`tel:${resource.phoneNumber}`}
+                      className="text-purple-700 hover:text-purple-900 hover:underline">
+                      {resource.phoneNumber}
+                    </a>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Map section */}
+            {resource.latitude && resource.longitude && (
+              <div className="mt-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+                  <FaMapMarkerAlt className="mr-2 text-purple-500" />
+                  Location
+                </h3>
+
+                <div className="h-64 w-full rounded-lg overflow-hidden">
+                  <APIProvider
+                    apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''}>
+                    <Map
+                      className="w-full h-full"
+                      center={{
+                        lat: resource.latitude,
+                        lng: resource.longitude,
+                      }}
+                      mapId={
+                        import.meta.env.VITE_GOOGLE_MAP_ID ||
+                        'resource-detail-map'
+                      }
+                      disableDefaultUI={true}
+                      zoom={15}
+                      zoomControl={true}>
+                      <AdvancedMarker
+                        position={{
+                          lat: resource.latitude,
+                          lng: resource.longitude,
+                        }}>
+                        <Pin
+                          background={'#3b82f6'}
+                          borderColor={'#1d4ed8'}
+                          glyphColor={'#ffffff'}
+                          scale={1.2}
+                        />
+                      </AdvancedMarker>
+                    </Map>
+                  </APIProvider>
                 </div>
               </div>
             )}

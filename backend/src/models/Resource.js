@@ -19,11 +19,29 @@ const resourceSchema = new mongoose.Schema({
   imageUrl: {
     type: String
   },
+  // New business information fields
+  businessName: {
+    type: String
+  },
+  businessAddress: {
+    type: String
+  },
+  phoneNumber: {
+    type: String
+  },
+  // Geolocation fields
+  latitude: {
+    type: Number
+  },
+  longitude: {
+    type: Number
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
+  tags: [String],
   createdAt: {
     type: Date,
     default: Date.now

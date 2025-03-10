@@ -1,6 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaCalendarAlt, FaUser, FaExternalLinkAlt } from 'react-icons/fa';
+import {
+  FaCalendarAlt,
+  FaUser,
+  FaExternalLinkAlt,
+  FaMapMarkerAlt,
+} from 'react-icons/fa';
 
 interface Resource {
   _id: string;
@@ -15,6 +20,10 @@ interface Resource {
     name: string;
     email: string;
   };
+  latitude?: number;
+  longitude?: number;
+  businessName?: string;
+  businessAddress?: string;
 }
 
 interface ResourceCardProps {
@@ -32,6 +41,9 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource }) => {
     tags,
     createdAt,
     user,
+    latitude,
+    longitude,
+    businessName,
   } = resource;
 
   // Format date
@@ -74,6 +86,19 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource }) => {
             <FaCalendarAlt className="mr-1 text-purple-400" />
             {formattedDate}
           </div>
+        </div>
+
+        <div className="flex justify-between items-center mb-3">
+          <span className="inline-block bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs font-medium">
+            {category}
+          </span>
+
+          {latitude && longitude && (
+            <span className="flex items-center text-xs text-gray-500">
+              <FaMapMarkerAlt className="text-purple-400 mr-1" />
+              {businessName || 'Location available'}
+            </span>
+          )}
         </div>
 
         <Link to={`/resources/${_id}`}>
