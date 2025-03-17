@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import RwandaWomenHub from './pages/Homepage';
+import KigaliWomenHub from './pages/Homepage';
 import ResourcesForWomen from './pages/resources/Resources';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
@@ -23,7 +23,7 @@ const App: React.FC = () => {
         <div className="flex flex-col bg-gray-100 min-h-screen">
           <main className="flex-grow">
             <Routes>
-              <Route path="/" element={<RwandaWomenHub />} />
+              <Route path="/" element={<KigaliWomenHub />} />
               <Route path="/community" element={<CommunityForum />} />
               <Route path="/discussions" element={<DiscussionList />} />
               <Route path="/discussions/:id" element={<DiscussionDetail />} />

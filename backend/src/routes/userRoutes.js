@@ -5,7 +5,6 @@ import {
   createUser,
   updateUser,
   deleteUser,
-  registerUser,
   loginUser,
   getUserProfile
 } from '../controllers/userController.js';
@@ -14,7 +13,7 @@ import auth from '../middleware/auth.js';
 const router = express.Router();
 
 // Public routes
-router.post('/register', registerUser);
+router.post('/register', createUser);
 router.post('/login', loginUser);
 
 // Protected routes

@@ -1,24 +1,34 @@
 import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 import config from '../utils/config.js';
 
-const auth = (req, res, next) => {
-  // Get token from header
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-
-  // Check if no token
-  if (!token) {
-    return res.status(401).json({ error: 'No token, authorization denied' });
-  }
-
+const auth = async (req, res, next) => {
   try {
+    let token;
+    
+    // Extract token from header (improved format checking)
+    if (req.headers.authorization?.startsWith('Bearer ')) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+
+    if (!token) {
+      return res.status(401).json({ message: 'Not authorized, no token' });
+    }
+
     // Verify token
     const decoded = jwt.verify(token, config.JWT_SECRET);
-
-    // Add user from payload
-    req.user = decoded;
+    
+    // Find user and select without password
+    const user = await User.findById(decoded.id).select('-password');
+    
+    if (!user) {
+      return res.status(401).json({ message: 'Not authorized, user not found' });
+    }
+    
+    req.user = user;
     next();
-  } catch (e) {
-    res.status(401).json({ error: 'Token is not valid' });
+  } catch (error) {
+    res.status(401).json({ message: 'Not authorized, token failed' });
   }
 };
 

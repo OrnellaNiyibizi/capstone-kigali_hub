@@ -29,35 +29,44 @@ export const getUserById = async (req, res) => {
   }
 };
 
-// Combined user creation function that works for both admin and self-registration
+
 export const createUser = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ error: 'Email already in use' });
+      return res.status(400).json({ message: 'User already exists' });
     }
 
     const user = new User({ name, email, password });
     const newUser = await user.save();
-    const userResponse = newUser.toObject();
-    delete userResponse.password;
 
+    // Generate JWT token
+    const token = jwt.sign(
+      {
+        id: newUser._id,
+        email: newUser.email,
+        name: newUser.name
+      },
+      config.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    // Prevent caching of authentication responses
+    res.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
     res.status(201).json({
-      message: 'User created successfully',
       userId: newUser._id,
       name: newUser.name,
-      email: newUser.email
+      email: newUser.email,
+      token: token
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
 
-// Just alias registerUser to createUser
-export const registerUser = createUser;
+
 
 // Update a user
 export const updateUser = async (req, res) => {

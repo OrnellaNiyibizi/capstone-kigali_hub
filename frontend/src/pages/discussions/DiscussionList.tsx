@@ -61,7 +61,7 @@ const DiscussionList: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-900">Discussions</h1>
             {isAuthenticated && (
               <Link
-                to="/discussions/create"
+                to="/discussions/new"
                 className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition">
                 Start Discussion
               </Link>

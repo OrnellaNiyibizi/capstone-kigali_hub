@@ -90,13 +90,12 @@ const AddEditDiscussion: React.FC = () => {
   };
 
   const categories = [
-    'General',
-    'Career',
+    'Health Advice',
+    'Financial Support',
+    'Job Opportunities',
     'Education',
-    'Health',
-    'Technology',
-    'Entrepreneurship',
-    'Finance',
+    'General',
+    'Other',
   ];
 
   return (
