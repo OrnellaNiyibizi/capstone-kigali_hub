@@ -5,8 +5,10 @@ import { fetchDiscussions } from '../../services/discussionService';
 import { Discussion } from '../../types/Discussion';
 import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
+import { useTranslation } from 'react-i18next';
 
 const DiscussionList: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const [discussions, setDiscussions] = useState<Discussion[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -15,12 +17,12 @@ const DiscussionList: React.FC = () => {
 
   const categories = [
     'All',
-    'Health Advice',
-    'Financial Support',
-    'Job Opportunities',
-    'Education',
-    'General',
-    'Other',
+    t('discussionCategories.healthAdvice.title', 'Health Advice'),
+    t('discussionCategories.financialSupport.title', 'Financial Support'),
+    t('discussionCategories.jobOpportunities.title', 'Job Opportunities'),
+    t('discussionCategories.education.title', 'Education'),
+    t('discussionCategories.general.title', 'General'),
+    t('discussionCategories.other.title', 'Other'),
   ];
 
   useEffect(() => {
@@ -44,12 +46,17 @@ const DiscussionList: React.FC = () => {
   }, [selectedCategory]);
 
   const formatDate = (dateString: string) => {
+    // Consider using a date-formatting library with i18n support
+    // For simplicity, we'll use the built-in formatter
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+    return new Date(dateString).toLocaleDateString(
+      i18n.language === 'rw' ? 'fr-RW' : undefined,
+      options
+    );
   };
 
   return (
@@ -58,12 +65,14 @@ const DiscussionList: React.FC = () => {
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Discussions</h1>
+            <h1 className="text-3xl font-bold text-gray-900">
+              {t('discussions.title', 'Discussions')}
+            </h1>
             {isAuthenticated && (
               <Link
                 to="/discussions/new"
                 className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition">
-                Start Discussion
+                {t('discussions.startDiscussion', 'Start Discussion')}
               </Link>
             )}
           </div>
@@ -71,7 +80,7 @@ const DiscussionList: React.FC = () => {
           {/* Category filter */}
           <div className="mb-8">
             <h2 className="text-lg font-medium text-gray-700 mb-3">
-              Filter by category
+              {t('discussions.filterByCategory', 'Filter by category')}
             </h2>
             <div className="flex flex-wrap gap-2">
               {categories.map((category) => (
@@ -100,23 +109,27 @@ const DiscussionList: React.FC = () => {
           {loading ? (
             <div className="text-center py-10">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-purple-500 border-t-transparent"></div>
-              <p className="mt-2 text-gray-600">Loading discussions...</p>
+              <p className="mt-2 text-gray-600">
+                {t('discussions.loading', 'Loading discussions...')}
+              </p>
             </div>
           ) : discussions.length === 0 ? (
             <div className="text-center py-10 bg-white rounded-lg shadow-md">
-              <p className="text-gray-700 mb-4">No discussions found.</p>
+              <p className="text-gray-700 mb-4">
+                {t('discussions.noDiscussions', 'No discussions found.')}
+              </p>
               {isAuthenticated ? (
                 <Link
                   to="/discussions/create"
                   className="inline-block px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition">
-                  Start the first discussion
+                  {t('discussions.startFirst', 'Start the first discussion')}
                 </Link>
               ) : (
                 <p>
                   <Link to="/login" className="text-purple-600 hover:underline">
-                    Sign in
+                    {t('nav.signIn', 'Sign in')}
                   </Link>{' '}
-                  to start a discussion
+                  {t('discussions.signInToStart', 'to start a discussion')}
                 </p>
               )}
             </div>
@@ -140,7 +153,8 @@ const DiscussionList: React.FC = () => {
 
                     <div className="mt-2 flex items-center text-sm text-gray-500">
                       <span>
-                        Posted by {discussion.user?.name || 'Unknown User'}
+                        {t('discussions.postedBy', 'Posted by')}{' '}
+                        {discussion.user?.name || 'Unknown User'}
                       </span>
                       <span className="mx-2">•</span>
                       <span>{formatDate(discussion.createdAt)}</span>
@@ -154,13 +168,15 @@ const DiscussionList: React.FC = () => {
                       <Link
                         to={`/discussions/${discussion._id}`}
                         className="text-purple-600 hover:text-purple-800">
-                        Read more →
+                        {t('discussions.readMore', 'Read more →')}
                       </Link>
 
                       <div className="flex items-center text-sm text-gray-500">
                         <span>
-                          {discussion.comments?.length || 0} comment
-                          {discussion.comments?.length !== 1 ? 's' : ''}
+                          {discussion.comments?.length || 0}{' '}
+                          {discussion.comments?.length !== 1
+                            ? t('discussions.commentsPlural', 'comments')
+                            : t('discussions.comments', 'comment')}
                         </span>
                       </div>
                     </div>

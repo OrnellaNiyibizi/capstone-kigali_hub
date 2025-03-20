@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
 import api from '../../services/api';
+import { useTranslation } from 'react-i18next'; // Add translation hook
 
 interface Resource {
   _id: string;
@@ -23,6 +24,7 @@ interface Resource {
 }
 
 const Profile: React.FC = () => {
+  const { t } = useTranslation(); // Initialize translation
   const { user, token, isAuthenticated, logout } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -68,18 +70,31 @@ const Profile: React.FC = () => {
           // Server responded with error status
           setError(
             axiosError.response.data?.message ||
-              `Server error: ${axiosError.response.status}`
+              t('profile.serverError', 'Server error: {{status}}', {
+                status: axiosError.response.status,
+              })
           );
         } else if (axiosError.request) {
           // Request made but no response received
-          setError('No response received. Please check your connection.');
+          setError(
+            t(
+              'resources.connectionError',
+              'No response received. Please check your connection.'
+            )
+          );
         } else {
           // Error setting up request
-          setError(`Request error: ${axiosError.message}`);
+          setError(
+            t('profile.requestError', 'Request error: {{message}}', {
+              message: axiosError.message,
+            })
+          );
         }
       } else {
         // Handle non-Axios errors
-        setError('An unexpected error occurred');
+        setError(
+          t('resources.unexpectedError', 'An unexpected error occurred')
+        );
       }
     } finally {
       setLoadingResources(false);
@@ -102,7 +117,7 @@ const Profile: React.FC = () => {
         }
       );
 
-      setMessage('Profile updated successfully');
+      setMessage(t('profile.updateSuccess', 'Profile updated successfully'));
       setIsEditing(false);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -110,15 +125,28 @@ const Profile: React.FC = () => {
         if (axiosError.response) {
           setError(
             axiosError.response.data?.message ||
-              `Update failed: ${axiosError.response.status}`
+              t('profile.updateFailed', 'Update failed: {{status}}', {
+                status: axiosError.response.status,
+              })
           );
         } else if (axiosError.request) {
-          setError('No response received. Please try again.');
+          setError(
+            t('profile.noResponse', 'No response received. Please try again.')
+          );
         } else {
-          setError(`Request failed: ${axiosError.message}`);
+          setError(
+            t('profile.requestFailed', 'Request failed: {{message}}', {
+              message: axiosError.message,
+            })
+          );
         }
       } else {
-        setError('Update failed due to an unexpected error');
+        setError(
+          t(
+            'profile.unexpectedError',
+            'Update failed due to an unexpected error'
+          )
+        );
       }
     }
   };
@@ -128,7 +156,13 @@ const Profile: React.FC = () => {
     resourceTitle: string
   ) => {
     if (
-      !window.confirm(`Are you sure you want to delete "${resourceTitle}"?`)
+      !window.confirm(
+        t(
+          'resources.deleteConfirm',
+          'Are you sure you want to delete "{{title}}"?',
+          { title: resourceTitle }
+        )
+      )
     ) {
       return;
     }
@@ -140,7 +174,9 @@ const Profile: React.FC = () => {
         },
       });
 
-      setMessage('Resource deleted successfully!');
+      setMessage(
+        t('resources.deleteSuccess', 'Resource deleted successfully!')
+      );
       setUserResources(
         userResources.filter((resource) => resource._id !== resourceId)
       );
@@ -151,15 +187,33 @@ const Profile: React.FC = () => {
         if (axiosError.response) {
           setError(
             axiosError.response.data?.message ||
-              `Delete failed: ${axiosError.response.status}`
+              t('profile.deleteFailed', 'Delete failed: {{status}}', {
+                status: axiosError.response.status,
+              })
           );
         } else if (axiosError.request) {
-          setError('No response received. The resource may still be deleted.');
+          setError(
+            t(
+              'resources.noResponse',
+              'No response received. The resource may still be deleted.'
+            )
+          );
         } else {
-          setError(`Delete request failed: ${axiosError.message}`);
+          setError(
+            t(
+              'profile.deleteRequestFailed',
+              'Delete request failed: {{message}}',
+              { message: axiosError.message }
+            )
+          );
         }
       } else {
-        setError('Failed to delete resource due to an unexpected error');
+        setError(
+          t(
+            'profile.deleteUnexpectedError',
+            'Failed to delete resource due to an unexpected error'
+          )
+        );
       }
       setTimeout(() => setError(''), 3000);
     }
@@ -171,7 +225,7 @@ const Profile: React.FC = () => {
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto bg-white shadow rounded-lg p-6">
           <h1 className="text-2xl font-bold text-purple-900 mb-6">
-            My Profile
+            {t('profile.title', 'My Profile')}
           </h1>
 
           {message && (
@@ -191,7 +245,7 @@ const Profile: React.FC = () => {
               <label
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700 mb-1">
-                Name
+                {t('profile.nameField', 'Name')}
               </label>
               {isEditing ? (
                 <input
@@ -210,11 +264,11 @@ const Profile: React.FC = () => {
               <label
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700 mb-1">
-                Email
+                {t('profile.emailField', 'Email')}
               </label>
               <p className="text-gray-900 py-2">{email}</p>
               <p className="text-sm text-gray-500 mt-1">
-                Email cannot be changed
+                {t('profile.emailNoChange', 'Email cannot be changed')}
               </p>
             </div>
 
@@ -224,7 +278,7 @@ const Profile: React.FC = () => {
                   <button
                     type="submit"
                     className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">
-                    Save Changes
+                    {t('profile.saveChanges', 'Save Changes')}
                   </button>
                   <button
                     type="button"
@@ -233,7 +287,7 @@ const Profile: React.FC = () => {
                       setIsEditing(false);
                       if (user) setName(user.name);
                     }}>
-                    Cancel
+                    {t('createDiscussion.cancel', 'Cancel')}
                   </button>
                 </>
               ) : (
@@ -241,7 +295,7 @@ const Profile: React.FC = () => {
                   type="button"
                   className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
                   onClick={() => setIsEditing(true)}>
-                  Edit Profile
+                  {t('profile.editProfile', 'Edit Profile')}
                 </button>
               )}
 
@@ -249,7 +303,7 @@ const Profile: React.FC = () => {
                 type="button"
                 className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
                 onClick={logout}>
-                Logout
+                {t('nav.signOut', 'Logout')}
               </button>
             </div>
           </form>
@@ -257,29 +311,37 @@ const Profile: React.FC = () => {
           <div className="mt-10 border-t pt-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-purple-900">
-                My Resources
+                {t('profile.myResources', 'My Resources')}
               </h2>
               <Link
                 to="/add-resource"
                 className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 text-sm">
-                Add New Resource
+                {t('resources.addNew', 'Add New Resource')}
               </Link>
             </div>
 
             {loadingResources ? (
               <div className="text-center py-10">
                 <div className="inline-block animate-spin rounded-full h-6 w-6 border-4 border-purple-500 border-t-transparent"></div>
-                <p className="mt-2 text-gray-600">Loading your resources...</p>
+                <p className="mt-2 text-gray-600">
+                  {t('profile.loadingResources', 'Loading your resources...')}
+                </p>
               </div>
             ) : userResources.length === 0 ? (
               <div className="text-center py-6 bg-gray-50 rounded-lg border border-gray-200">
                 <p className="text-gray-600">
-                  You haven't created any resources yet.
+                  {t(
+                    'profile.noResourcesYet',
+                    "You haven't created any resources yet."
+                  )}
                 </p>
                 <Link
                   to="/add-resource"
                   className="mt-2 inline-block text-purple-600 hover:text-purple-800">
-                  Create your first resource
+                  {t(
+                    'profile.createFirstResource',
+                    'Create your first resource'
+                  )}
                 </Link>
               </div>
             ) : (
@@ -318,14 +380,14 @@ const Profile: React.FC = () => {
                       <Link
                         to={`/edit-resource/${resource._id}`}
                         className="text-sm text-blue-600 hover:text-blue-800">
-                        Edit
+                        {t('resources.edit', 'Edit')}
                       </Link>
                       <button
                         onClick={() =>
                           handleDeleteResource(resource._id, resource.title)
                         }
                         className="text-sm text-red-600 hover:text-red-800">
-                        Delete
+                        {t('resources.delete', 'Delete')}
                       </button>
                     </div>
                   </div>

@@ -1,0 +1,244 @@
+{
+  "hero": {
+    "title": "Empowering Women in Rwanda",
+    "description": "Join our platform to access resources, connect with events, and find job opportunities tailored for women in Rwanda. We're here to support your personal and professional growth.",
+    "getStarted": "Get Started",
+    "joinCommunity": "Join Community"
+  },
+  "objective": {
+    "title": "Our Objective",
+    "description": "We aim to empower women in Rwanda by providing access to vital resources, educational opportunities, and a supportive community.\n\nOur goal is to foster growth, collaboration, and success among women in our city, creating pathways to economic independence and leadership."
+  },
+  "categories": {
+    "title": "Highlighted Categories",
+    "healthcare": {
+      "name": "Healthcare",
+      "description": "Access health resources and services tailored for women"
+    },
+    "education": {
+      "name": "Education",
+      "description": "Discover learning opportunities and skill development programs"
+    },
+    "finance": {
+      "name": "Finance",
+      "description": "Find financial literacy resources and funding opportunities"
+    },
+    "networking": {
+      "name": "Networking",
+      "description": "Connect with other women professionals and mentors"
+    }
+  },
+  "successStories": {
+    "title": "Success Stories",
+    "stories": [
+      {
+        "name": "Jane Doe",
+        "role": "Software Developer",
+        "content": "Thanks to Rwanda Women Hub, I found a job that I love and met amazing women who inspire me every day! The resources and networking opportunities have been invaluable to my career growth."
+      },
+      {
+        "name": "Mary Kwizera",
+        "role": "Entrepreneur",
+        "content": "The resources provided here helped me start my own business. I couldn't have done it without this platform! The mentorship program connected me with experienced business leaders who guided me through challenges."
+      }
+    ]
+  },
+  "callToAction": {
+    "title": "Join Our Community Today",
+    "description": "Get access to exclusive resources, networking events, and job opportunities designed specifically for women in Rwanda.",
+    "joinNow": "Join Now",
+    "exploreResources": "Explore Resources"
+  },
+  "nav": {
+    "home": "Home",
+    "resources": "Resources",
+    "discussion": "Discussion",
+    "profile": "Your Profile",
+    "addResource": "Add Resource",
+    "signOut": "Sign out",
+    "signIn": "Sign In",
+    "signUp": "Sign Up"
+  },
+  "site": {
+    "name": "Rwanda Women Hub"
+  },
+  "resources": {
+    "title": "Resources for Women",
+    "addNew": "Add New Resource",
+    "editResource": "Edit Resource",
+    "loading": "Loading resources...",
+    "noResources": "No resources found. Be the first to add one!",
+    "details": "Details",
+    "visit": "Visit",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this resource?",
+    "deleteSuccess": "Resource deleted successfully!",
+    "connectionError": "No response from server. Please check your connection.",
+    "unexpectedError": "An unexpected error occurred",
+    "titleField": "Title",
+    "categoryField": "Category",
+    "descriptionField": "Description",
+    "urlField": "URL",
+    "imageUrlField": "Image URL",
+    "businessInfo": "Business Information",
+    "businessName": "Business Name",
+    "businessNamePlaceholder": "Business name",
+    "businessAddress": "Address",
+    "businessAddressPlaceholder": "Business address",
+    "phoneNumber": "Phone Number",
+    "phoneNumberPlaceholder": "Business phone number",
+    "location": "Location",
+    "useMyLocation": "Use my current location",
+    "coordinates": "Coordinates",
+    "mapInstructions": "Click on the map to set a location, drag the marker to adjust, or use the location button to set your current position.",
+    "mapsNotConfigured": "Google Maps API key not configured",
+    "geolocationNotSupported": "Geolocation is not supported by your browser",
+    "locationPermissionDenied": "Location permission was denied",
+    "locationUnavailable": "Location information is unavailable",
+    "locationTimeout": "The request to get location timed out",
+    "unknownLocationError": "An unknown error occurred",
+    "saving": "Saving...",
+    "update": "Update",
+    "create": "Create",
+    "updateSuccess": "Resource updated successfully!",
+    "createSuccess": "Resource created successfully!",
+    "saveError": "Failed to save resource. Please try again later.",
+    "deleteError": "Failed to delete resource",
+    "noResponse": "No response received. The resource may still be deleted.",
+    "requestError": "Request error",
+    "fetchError": "Failed to fetch resource",
+    "selectCategory": "Select a category"
+  },
+  "resourceFilters": {
+    "title": "Filter Resources",
+    "category": "Category",
+    "allCategories": "All Categories",
+    "sortBy": "Sort By",
+    "newestFirst": "Newest First",
+    "oldestFirst": "Oldest First",
+    "mostPopular": "Most Popular",
+    "searchTitle": "Search by Title",
+    "searchPlaceholder": "Search resources...",
+    "clearFilters": "Clear Filters"
+  },
+  "community": {
+    "welcome": "Welcome to Our Community",
+    "description": "Connect with other women, share experiences, ask questions, and find support.",
+    "startDiscussion": "Start a New Discussion",
+    "signInToParticipate": "Sign In to Participate",
+    "browseDiscussions": "Browse Discussions",
+    "discussionCategories": "Discussion Categories",
+    "browseTopics": "Browse topics →",
+    "guidelines": "Community Guidelines",
+    "guideline1": "Be respectful and considerate to all community members",
+    "guideline2": "Keep discussions relevant to women's interests and needs",
+    "guideline3": "Share personal experiences but respect others' privacy",
+    "guideline4": "Provide constructive feedback and support",
+    "guideline5": "Report inappropriate content to moderators"
+  },
+  "discussions": {
+    "title": "Discussions",
+    "startDiscussion": "Start Discussion",
+    "filterByCategory": "Filter by category",
+    "loading": "Loading discussions...",
+    "noDiscussions": "No discussions found.",
+    "startFirst": "Start the first discussion",
+    "signInToStart": "Sign in to start a discussion",
+    "postedBy": "Posted by",
+    "readMore": "Read more →",
+    "comments": "comment",
+    "commentsPlural": "comments",
+    "back": "Back to discussions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this discussion?",
+    "commentsTitle": "Comments",
+    "addComment": "Add a comment",
+    "posting": "Posting...",
+    "postComment": "Post Comment",
+    "signInToComment": "Please sign in to join the discussion.",
+    "noComments": "No comments yet. Be the first to comment!",
+    "deleting": "Deleting...",
+    "notFound": "Discussion not found or has been deleted.",
+    "viewAll": "View all discussions"
+  },
+  "createDiscussion": {
+    "title": "Start a New Discussion",
+    "editTitle": "Edit Discussion",
+    "titleField": "Title",
+    "titlePlaceholder": "What do you want to discuss?",
+    "category": "Category",
+    "selectCategory": "Select a category",
+    "content": "Content",
+    "contentPlaceholder": "Share your thoughts, questions, or experiences...",
+    "creating": "Creating...",
+    "submitting": "Submitting...",
+    "postDiscussion": "Post Discussion",
+    "updateDiscussion": "Update Discussion",
+    "cancel": "Cancel",
+    "allRequired": "All fields are required",
+    "mustLogIn": "You must be logged in"
+  },
+  "discussionCategories": {
+    "healthAdvice": {
+      "title": "Health Advice",
+      "description": "Discuss health-related questions and share advice."
+    },
+    "financialSupport": {
+      "title": "Financial Support",
+      "description": "Get and give financial advice and support."
+    },
+    "jobOpportunities": {
+      "title": "Job Opportunities",
+      "description": "Share job openings and career advice."
+    },
+    "education": {
+      "title": "Education",
+      "description": "Discuss educational opportunities and challenges."
+    },
+    "technology": {
+      "title": "Technology",
+      "description": "Share tech tips, advice, and opportunities."
+    },
+    "general": {
+      "title": "General"
+    },
+    "other": {
+      "title": "Other"
+    }
+  },
+  "common": {
+    "optional": "Optional"
+  },
+  "profile": {
+    "title": "My Profile",
+    "nameField": "Name",
+    "emailField": "Email",
+    "emailNoChange": "Email cannot be changed",
+    "saveChanges": "Save Changes",
+    "editProfile": "Edit Profile",
+    "myResources": "My Resources",
+    "loadingResources": "Loading your resources...",
+    "noResourcesYet": "You haven't created any resources yet.",
+    "createFirstResource": "Create your first resource",
+    "updateSuccess": "Profile updated successfully",
+    "updateFailed": "Update failed: {{status}}",
+    "noResponse": "No response received. Please try again.",
+    "requestFailed": "Request failed: {{message}}",
+    "unexpectedError": "Update failed due to an unexpected error",
+    "serverError": "Server error: {{status}}",
+    "requestError": "Request error: {{message}}",
+    "deleteFailed": "Delete failed: {{status}}",
+    "deleteRequestFailed": "Delete request failed: {{message}}",
+    "deleteUnexpectedError": "Failed to delete resource due to an unexpected error"
+  },
+  "footer": {
+    "tagline": "Empowering women in Rwanda through resources, community, and support.",
+    "quickLinks": "Quick Links",
+    "about": "About Us",
+    "contact": "Contact",
+    "connectWithUs": "Connect With Us",
+    "allRightsReserved": "All rights reserved."
+  }
+}

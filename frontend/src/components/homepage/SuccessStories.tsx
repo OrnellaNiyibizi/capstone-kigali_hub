@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Story {
   name: string;
@@ -7,28 +8,36 @@ interface Story {
   image: string;
 }
 
-const stories: Story[] = [
-  {
-    name: 'Jane Doe',
-    role: 'Software Developer',
-    content:
-      'Thanks to Rwanda Women Hub, I found a job that I love and met amazing women who inspire me every day! The resources and networking opportunities have been invaluable to my career growth.',
-    image: 'https://randomuser.me/api/portraits/women/44.jpg',
-  },
-  {
-    name: 'Mary Kwizera',
-    role: 'Entrepreneur',
-    content:
-      "The resources provided here helped me start my own business. I couldn't have done it without this platform! The mentorship program connected me with experienced business leaders who guided me through challenges.",
-    image: 'https://randomuser.me/api/portraits/women/68.jpg',
-  },
-];
-
 const SuccessStories: React.FC = () => {
+  const { t } = useTranslation();
+
+  // Get stories from translations
+  const story1 = {
+    name: t('successStories.stories.0.name', 'Jane Doe'),
+    role: t('successStories.stories.0.role', 'Software Developer'),
+    content: t(
+      'successStories.stories.0.content',
+      'Thanks to Rwanda Women Hub, I found a job that I love and met amazing women who inspire me every day! The resources and networking opportunities have been invaluable to my career growth.'
+    ),
+    image: 'https://randomuser.me/api/portraits/women/44.jpg',
+  };
+
+  const story2 = {
+    name: t('successStories.stories.1.name', 'Mary Kwizera'),
+    role: t('successStories.stories.1.role', 'Entrepreneur'),
+    content: t(
+      'successStories.stories.1.content',
+      "The resources provided here helped me start my own business. I couldn't have done it without this platform! The mentorship program connected me with experienced business leaders who guided me through challenges."
+    ),
+    image: 'https://randomuser.me/api/portraits/women/68.jpg',
+  };
+
+  const stories: Story[] = [story1, story2];
+
   return (
     <div>
       <h2 className="text-3xl md:text-4xl font-bold text-purple-900 text-center mb-10">
-        Success Stories
+        {t('successStories.title', 'Success Stories')}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {stories.map((story, index) => (

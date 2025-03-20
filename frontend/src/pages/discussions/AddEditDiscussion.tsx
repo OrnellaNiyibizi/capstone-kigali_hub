@@ -8,8 +8,10 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
+import { useTranslation } from 'react-i18next';
 
 const AddEditDiscussion: React.FC = () => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id?: string }>();
   const isEditing = !!id;
   const navigate = useNavigate();
@@ -57,12 +59,12 @@ const AddEditDiscussion: React.FC = () => {
     e.preventDefault();
 
     if (!token) {
-      setError('You must be logged in');
+      setError(t('createDiscussion.mustLogIn', 'You must be logged in'));
       return;
     }
 
     if (!title.trim() || !content.trim() || !category) {
-      setError('All fields are required');
+      setError(t('createDiscussion.allRequired', 'All fields are required'));
       return;
     }
 
@@ -90,12 +92,12 @@ const AddEditDiscussion: React.FC = () => {
   };
 
   const categories = [
-    'Health Advice',
-    'Financial Support',
-    'Job Opportunities',
-    'Education',
-    'General',
-    'Other',
+    t('discussionCategories.healthAdvice.title', 'Health Advice'),
+    t('discussionCategories.financialSupport.title', 'Financial Support'),
+    t('discussionCategories.jobOpportunities.title', 'Job Opportunities'),
+    t('discussionCategories.education.title', 'Education'),
+    t('discussionCategories.general.title', 'General'),
+    t('discussionCategories.other.title', 'Other'),
   ];
 
   return (
@@ -104,7 +106,9 @@ const AddEditDiscussion: React.FC = () => {
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto bg-white shadow rounded-lg p-6">
           <h1 className="text-2xl font-bold text-purple-900 mb-6">
-            {isEditing ? 'Edit Discussion' : 'Start a New Discussion'}
+            {isEditing
+              ? t('createDiscussion.editTitle', 'Edit Discussion')
+              : t('createDiscussion.title', 'Start a New Discussion')}
           </h1>
 
           {error && (
@@ -116,7 +120,9 @@ const AddEditDiscussion: React.FC = () => {
           {fetching ? (
             <div className="text-center py-10">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-purple-500 border-t-transparent"></div>
-              <p className="mt-2 text-gray-600">Loading discussion...</p>
+              <p className="mt-2 text-gray-600">
+                {t('discussions.loading', 'Loading discussion...')}
+              </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -124,7 +130,7 @@ const AddEditDiscussion: React.FC = () => {
                 <label
                   htmlFor="title"
                   className="block text-sm font-medium text-gray-700 mb-1">
-                  Title *
+                  {t('createDiscussion.titleField', 'Title')} *
                 </label>
                 <input
                   type="text"
@@ -132,7 +138,10 @@ const AddEditDiscussion: React.FC = () => {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-                  placeholder="Enter a clear, specific title"
+                  placeholder={t(
+                    'createDiscussion.titlePlaceholder',
+                    'What do you want to discuss?'
+                  )}
                   required
                 />
               </div>
@@ -141,7 +150,7 @@ const AddEditDiscussion: React.FC = () => {
                 <label
                   htmlFor="category"
                   className="block text-sm font-medium text-gray-700 mb-1">
-                  Category *
+                  {t('createDiscussion.category', 'Category')} *
                 </label>
                 <select
                   id="category"
@@ -149,7 +158,9 @@ const AddEditDiscussion: React.FC = () => {
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
                   required>
-                  <option value="">Select a category</option>
+                  <option value="">
+                    {t('createDiscussion.selectCategory', 'Select a category')}
+                  </option>
                   {categories.map((cat) => (
                     <option key={cat} value={cat}>
                       {cat}
@@ -162,7 +173,7 @@ const AddEditDiscussion: React.FC = () => {
                 <label
                   htmlFor="content"
                   className="block text-sm font-medium text-gray-700 mb-1">
-                  Content *
+                  {t('createDiscussion.content', 'Content')} *
                 </label>
                 <textarea
                   id="content"
@@ -170,7 +181,10 @@ const AddEditDiscussion: React.FC = () => {
                   onChange={(e) => setContent(e.target.value)}
                   rows={8}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-                  placeholder="Share your thoughts, questions, or ideas..."
+                  placeholder={t(
+                    'createDiscussion.contentPlaceholder',
+                    'Share your thoughts, questions, or experiences...'
+                  )}
                   required
                 />
               </div>
@@ -180,17 +194,20 @@ const AddEditDiscussion: React.FC = () => {
                   type="button"
                   onClick={() => navigate('/discussions')}
                   className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50">
-                  Cancel
+                  {t('createDiscussion.cancel', 'Cancel')}
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
                   className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:bg-purple-400 disabled:cursor-not-allowed">
                   {loading
-                    ? 'Submitting...'
+                    ? t('createDiscussion.submitting', 'Submitting...')
                     : isEditing
-                    ? 'Update Discussion'
-                    : 'Post Discussion'}
+                    ? t(
+                        'createDiscussion.updateDiscussion',
+                        'Update Discussion'
+                      )
+                    : t('createDiscussion.postDiscussion', 'Post Discussion')}
                 </button>
               </div>
             </form>

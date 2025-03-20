@@ -1,0 +1,244 @@
+{
+  "hero": {
+    "title": "Guha Ububasha Abagore bo mu Rwanda",
+    "description": "Ifatanye na purogaramu yacu kugira ngo ubone ibikoresho, wihuze n'ibikorwa, kandi ubone amahirwe y'akazi yagenewe abagore bo mu Rwanda. Turi hano kugira ngo dushyigikire iterambere ryawe bwite n'umwuga.",
+    "getStarted": "Tangira",
+    "joinCommunity": "Ifatanye n'Umuryango"
+  },
+  "objective": {
+    "title": "Intego Yacu",
+    "description": "Intego yacu ni uguha abagore bo mu Rwanda ububasha tubaha ibikoresho ngombwa, amahirwe yo kwiga, n'umuryango ubafasha.\n\nIntego yacu ni ukwagura, gufatanya, no gutsinda mu bagore bo mu mujyi wacu, dukora inzira zo kugira ubwigenge mu bukungu no kuyobora."
+  },
+  "categories": {
+    "title": "Ibyiciro Byihariye",
+    "healthcare": {
+      "name": "Ubuzima",
+      "description": "Kubona ibikoresho n'ubufasha bw'ubuzima byagenewe abagore"
+    },
+    "education": {
+      "name": "Uburezi",
+      "description": "Vumbura amahirwe yo kwiga no gahunda zo guteza imbere ubumenyi"
+    },
+    "finance": {
+      "name": "Imari",
+      "description": "Gushaka ibikoresho byo kwiga imari n'amahirwe yo kubona amafaranga"
+    },
+    "networking": {
+      "name": "Guhuza",
+      "description": "Ihuze n'abandi bagore b'abanyamwuga n'abayobozi"
+    }
+  },
+  "successStories": {
+    "title": "Inkuru z'Ibyiza",
+    "stories": [
+      {
+        "name": "Jane Doe",
+        "role": "Umukodesha wa Software",
+        "content": "Kubera Ikigo cy'Abagore mu Rwanda, nasanze akazi nkunda kandi n'abantu ban'umviye cyane, batuma ntera imbere buri munsi! Ibikoresho n'amahirwe yo gukorana byamfashije cyane mu guteza imbere umwuga wanjye."
+      },
+      {
+        "name": "Mary Kwizera",
+        "role": "Umucuruzi",
+        "content": "Ibikoresho biri hano byamfashije gutangira ubucuruzi bwanjye. Sinashoboraga kubikora nta bufasha bw'iyi porogaramu! Gahunda y'ubuyobozi yamfashije kugira abayobozi b'ubucuruzi bampubeje kandi banyobora mu bihe bikomeye."
+      }
+    ]
+  },
+  "callToAction": {
+    "title": "Iyungirane n'Umuryango Wacu",
+    "description": "Bona ibikoresho byihariye, ibikorwa byo guhuza, n'amahirwe y'akazi yagenewe abagore bo mu Rwanda.",
+    "joinNow": "Iyandikishe Nonaha",
+    "exploreResources": "Reba Ibikoresho"
+  },
+  "nav": {
+    "home": "Ahabanza",
+    "resources": "Ibikoresho",
+    "discussion": "Ibiganiro",
+    "profile": "Umwirondoro Wawe",
+    "addResource": "Ongeraho Igikoresho",
+    "signOut": "Sohoka",
+    "signIn": "Injira",
+    "signUp": "Iyandikishe"
+  },
+  "site": {
+    "name": "Ikigo cy'Abagore mu Rwanda"
+  },
+  "resources": {
+    "title": "Ibikoresho by'Abagore",
+    "addNew": "Ongeraho Igikoresho Gishya",
+    "editResource": "Hindura Igikoresho",
+    "loading": "Gutegereza ibikoresho...",
+    "noResources": "Nta bikoresho byabonetse. Ba uwa mbere mu kongeraho kimwe!",
+    "details": "Birambuye",
+    "visit": "Sura",
+    "edit": "Hindura",
+    "delete": "Gusiba",
+    "deleteConfirm": "Wizeye ko ushaka gusiba \"{{title}}\"?",
+    "deleteSuccess": "Igikoresho cyasibwe neza!",
+    "connectionError": "Nta gisubizo kibonetse. Nyamuneka, reba umurongo wawe.",
+    "unexpectedError": "Habayeho ikosa ritateganyijwe",
+    "titleField": "Umutwe",
+    "categoryField": "Icyiciro",
+    "descriptionField": "Ibisobanuro",
+    "urlField": "URL",
+    "imageUrlField": "URL y'Ishusho",
+    "businessInfo": "Amakuru y'Ubucuruzi",
+    "businessName": "Izina ry'Ubucuruzi",
+    "businessNamePlaceholder": "Izina ry'ubucuruzi",
+    "businessAddress": "Aderesi",
+    "businessAddressPlaceholder": "Aderesi y'ubucuruzi",
+    "phoneNumber": "Nimero ya Telefoni",
+    "phoneNumberPlaceholder": "Nimero ya telefoni y'ubucuruzi",
+    "location": "Ahantu",
+    "useMyLocation": "Koresha ahantu ndi",
+    "coordinates": "Aho biherereye",
+    "mapInstructions": "Kanda ku ikarita kugira ngo ushyireho ahantu, ukurure ikimenyetso kugira ngo uhindure, cyangwa ukoreshe buto y'ahantu kugira ngo ushyireho aho uri.",
+    "mapsNotConfigured": "Urufunguzo rwa Google Maps API ntirwateguwe",
+    "geolocationNotSupported": "Kumenya ahantu ntibisanzwe muri iki gikoresho",
+    "locationPermissionDenied": "Uburenganzira bwo kumenya ahantu bwanzwe",
+    "locationUnavailable": "Amakuru y'ahantu ntaboneka",
+    "locationTimeout": "Igihe cyo kumenya ahantu kirangiye",
+    "unknownLocationError": "Habayeho ikosa ritazwi",
+    "saving": "Kubika...",
+    "update": "Kuvugurura",
+    "create": "Kurema",
+    "updateSuccess": "Igikoresho cyavuguruwe neza!",
+    "createSuccess": "Igikoresho cyakozwe neza!",
+    "saveError": "Ntibyashobotse kubika igikoresho. Nyamuneka, gerageza nanone.",
+    "deleteError": "Ntibyashobotse gusiba igikoresho",
+    "noResponse": "Nta gisubizo cyabonetse. Igikoresho gishobora kuba cyarasibwe.",
+    "requestError": "Ikosa ryo gusaba",
+    "fetchError": "Ntibyashobotse kuzana igikoresho",
+    "selectCategory": "Hitamo icyiciro"
+  },
+  "resourceFilters": {
+    "title": "Gushungura Ibikoresho",
+    "category": "Icyiciro",
+    "allCategories": "Ibyiciro Byose",
+    "sortBy": "Gutondekanya",
+    "newestFirst": "Bishya Mbere",
+    "oldestFirst": "Bishaje Mbere",
+    "mostPopular": "Inkunga",
+    "searchTitle": "Shakira ku Mutwe",
+    "searchPlaceholder": "Shakisha ibikoresho...",
+    "clearFilters": "Siba Amagenyeko"
+  },
+  "community": {
+    "welcome": "Murakaza Neza mu Muryango Wacu",
+    "description": "Ihuze n'abandi bagore, gusangira uburambe, kubaza ibibazo, no kubona ubufasha.",
+    "startDiscussion": "Tangiza Ikiganiro Gishya",
+    "signInToParticipate": "Injira Kugira Ngo Witabire",
+    "browseDiscussions": "Reba Ibiganiro",
+    "discussionCategories": "Ibyiciro by'Ibiganiro",
+    "browseTopics": "Reba ingingo →",
+    "guidelines": "Amabwiriza y'Umuryango",
+    "guideline1": "Kubahana no kwita ku bagize umuryango bose",
+    "guideline2": "Kuguma ku biganiro byerekeranye n'inyungu n'ibikenewe n'abagore",
+    "guideline3": "Gusangira uburambe bwite ariko ukubaha ubuzima bwite bw'abandi",
+    "guideline4": "Gutanga ibitekerezo n'ubufasha bifite akamaro",
+    "guideline5": "Kumenyekanisha ibintu bidasanzwe ku bayobozi"
+  },
+  "discussions": {
+    "title": "Ibiganiro",
+    "startDiscussion": "Tangiza Ikiganiro",
+    "filterByCategory": "Shungura ku cyiciro",
+    "loading": "Gutegereza ibiganiro...",
+    "noDiscussions": "Nta biganiro byabonetse.",
+    "startFirst": "Tangiza ikiganiro cya mbere",
+    "signInToStart": "Injira kugira ngo utangize ikiganiro",
+    "postedBy": "Byashyizwe na",
+    "readMore": "Soma birambuye →",
+    "comments": "igitekerezo",
+    "commentsPlural": "ibitekerezo",
+    "back": "Garuka ku biganiro",
+    "edit": "Hindura",
+    "delete": "Gusiba",
+    "deleteConfirm": "Uzi neza ko ushaka gusiba iki kiganiro?",
+    "commentsTitle": "Ibitekerezo",
+    "addComment": "Ongeraho igitekerezo",
+    "posting": "Kohereza...",
+    "postComment": "Ohereza Igitekerezo",
+    "signInToComment": "Nyamuneka injira kugira ngo witabire ikiganiro.",
+    "noComments": "Nta bitekerezo kugeza ubu. Ba uwa mbere mu gutanga igitekerezo!",
+    "deleting": "Gusiba...",
+    "notFound": "Ikiganiro ntigisanzwe cyangwa cyarasibwe.",
+    "viewAll": "Reba ibiganiro byose"
+  },
+  "createDiscussion": {
+    "title": "Tangiza Ikiganiro Gishya",
+    "editTitle": "Hindura Ikiganiro",
+    "titleField": "Umutwe",
+    "titlePlaceholder": "Ni iki ushaka kuganiraho?",
+    "category": "Icyiciro",
+    "selectCategory": "Hitamo icyiciro",
+    "content": "Ibikubiyemo",
+    "contentPlaceholder": "Sangiza ibitekerezo byawe, ibibazo, cyangwa uburambe...",
+    "creating": "Kurema...",
+    "submitting": "Kohereza...",
+    "postDiscussion": "Ohereza Ikiganiro",
+    "updateDiscussion": "Kuvugurura Ikiganiro",
+    "cancel": "Hagarika",
+    "allRequired": "Ibisabwa byose ni ngombwa",
+    "mustLogIn": "Ugomba kwinjira"
+  },
+  "discussionCategories": {
+    "healthAdvice": {
+      "title": "Inama ku Buzima",
+      "description": "Ganira ku bibazo bijyanye n'ubuzima no gusangira inama."
+    },
+    "financialSupport": {
+      "title": "Ubufasha bw'Imari",
+      "description": "Habwa kandi utange inama z'imari n'ubufasha."
+    },
+    "jobOpportunities": {
+      "title": "Amahirwe y'Akazi",
+      "description": "Sangira imyanya y'akazi n'inama z'umwuga."
+    },
+    "education": {
+      "title": "Uburezi",
+      "description": "Ganira ku mahirwe n'imbogamizi by'uburezi."
+    },
+    "technology": {
+      "title": "Ikoranabuhanga",
+      "description": "Sangiza inama za tekiniki, inama, n'amahirwe."
+    },
+    "general": {
+      "title": "Rusange"
+    },
+    "other": {
+      "title": "Ibindi"
+    }
+  },
+  "common": {
+    "optional": "Si ngombwa"
+  },
+  "profile": {
+    "title": "Umwirondoro Wanjye",
+    "nameField": "Izina",
+    "emailField": "Imeri",
+    "emailNoChange": "Imeri ntishobora guhindurwa",
+    "saveChanges": "Bika Impinduka",
+    "editProfile": "Hindura Umwirondoro",
+    "myResources": "Ibikoresho Byanjye",
+    "loadingResources": "Gutegereza ibikoresho byawe...",
+    "noResourcesYet": "Ntabikoresho waremye kugeza ubu.",
+    "createFirstResource": "Rema igikoresho cyawe cya mbere",
+    "updateSuccess": "Umwirondoro wavuguruwe neza",
+    "updateFailed": "Kuvugurura byanze: {{status}}",
+    "noResponse": "Nta gisubizo cyabonetse. Nyamuneka, gerageza nanone.",
+    "requestFailed": "Icyifuzo cyanze: {{message}}",
+    "unexpectedError": "Kuvugurura byanze kubera ikosa ritateganyijwe",
+    "serverError": "Ikosa rya seriveri: {{status}}",
+    "requestError": "Ikosa ry'icyifuzo: {{message}}",
+    "deleteFailed": "Gusiba byanze: {{status}}",
+    "deleteRequestFailed": "Icyifuzo cyo gusiba cyanze: {{message}}",
+    "deleteUnexpectedError": "Gusiba igikoresho byanze kubera ikosa ritateganyijwe"
+  },
+  "footer": {
+    "tagline": "Guha ububasha abagore bo mu Rwanda binyuze mu bikoresho, umuryango, n'ubufasha.",
+    "quickLinks": "Aho Ujya Vuba",
+    "about": "Turi Ba Nde",
+    "contact": "Twandikire",
+    "connectWithUs": "Duhure ku Mbuga Nkoranyambaga",
+    "allRightsReserved": "Uburenganzira bwose bwihariwe."
+  }
+}

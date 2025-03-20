@@ -1,35 +1,49 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-const categories = [
-  {
-    name: 'Healthcare',
-    description: 'Access health resources and services tailored for women',
-    icon: '🩺',
-  },
-  {
-    name: 'Education',
-    description:
-      'Discover learning opportunities and skill development programs',
-    icon: '📚',
-  },
-  {
-    name: 'Finance',
-    description: 'Find financial literacy resources and funding opportunities',
-    icon: '💰',
-  },
-  {
-    name: 'Networking',
-    description: 'Connect with other women professionals and mentors',
-    icon: '🔗',
-  },
-];
+import { useTranslation } from 'react-i18next';
 
 const HighlightedCategories: React.FC = () => {
+  const { t } = useTranslation();
+
+  const categories = [
+    {
+      name: t('categories.healthcare.name', 'Healthcare'),
+      description: t(
+        'categories.healthcare.description',
+        'Access health resources and services tailored for women'
+      ),
+      icon: '🩺',
+    },
+    {
+      name: t('categories.education.name', 'Education'),
+      description: t(
+        'categories.education.description',
+        'Discover learning opportunities and skill development programs'
+      ),
+      icon: '📚',
+    },
+    {
+      name: t('categories.finance.name', 'Finance'),
+      description: t(
+        'categories.finance.description',
+        'Find financial literacy resources and funding opportunities'
+      ),
+      icon: '💰',
+    },
+    {
+      name: t('categories.networking.name', 'Networking'),
+      description: t(
+        'categories.networking.description',
+        'Connect with other women professionals and mentors'
+      ),
+      icon: '🔗',
+    },
+  ];
+
   return (
     <div className="px-4">
       <h2 className="text-3xl md:text-4xl font-bold text-purple-900 text-center mb-10">
-        Highlighted Categories
+        {t('categories.title', 'Highlighted Categories')}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {categories.map((category, index) => (

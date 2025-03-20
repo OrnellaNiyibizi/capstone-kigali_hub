@@ -8,6 +8,7 @@ import ResourceFilters, {
 } from '../../components/resources/ResourceFilters';
 import api from '../../services/api';
 import Footer from '../../components/common/Footer';
+import { useTranslation } from 'react-i18next';
 
 interface Resource {
   _id: string;
@@ -25,6 +26,7 @@ interface Resource {
 }
 
 const ResourcesForWomen: React.FC = () => {
+  const { t } = useTranslation();
   const [resources, setResources] = useState<Resource[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -75,12 +77,19 @@ const ResourcesForWomen: React.FC = () => {
                     `Failed to fetch resources: ${axiosError.response.status}`
                 );
               } else if (axiosError.request) {
-                setError('No response received. Please check your connection.');
+                setError(
+                  t(
+                    'resources.connectionError',
+                    'No response received. Please check your connection.'
+                  )
+                );
               } else {
                 setError(`Request error: ${axiosError.message}`);
               }
             } else {
-              setError('An unexpected error occurred');
+              setError(
+                t('resources.unexpectedError', 'An unexpected error occurred')
+              );
             }
           } finally {
             setLoading(false);
@@ -90,7 +99,7 @@ const ResourcesForWomen: React.FC = () => {
         fetchData();
       }, 300); // 300ms debounce
     },
-    []
+    [t]
   );
 
   useEffect(() => {
@@ -111,7 +120,13 @@ const ResourcesForWomen: React.FC = () => {
 
   const handleDelete = async (resourceId: string, resourceTitle: string) => {
     if (
-      !window.confirm(`Are you sure you want to delete "${resourceTitle}"?`)
+      !window.confirm(
+        t(
+          'resources.deleteConfirm',
+          'Are you sure you want to delete "{{title}}"?',
+          { title: resourceTitle }
+        )
+      )
     ) {
       return;
     }
@@ -124,7 +139,9 @@ const ResourcesForWomen: React.FC = () => {
         },
       });
 
-      setSuccessMessage('Resource deleted successfully!');
+      setSuccessMessage(
+        t('resources.deleteSuccess', 'Resource deleted successfully!')
+      );
       setResources(resources.filter((resource) => resource._id !== resourceId));
 
       setTimeout(() => setSuccessMessage(''), 3000);
@@ -139,14 +156,21 @@ const ResourcesForWomen: React.FC = () => {
           );
         } else if (axiosError.request) {
           // Request was made but no response received
-          setError('No response from server. Please check your connection.');
+          setError(
+            t(
+              'resources.connectionError',
+              'No response from server. Please check your connection.'
+            )
+          );
         } else {
           // Error configuring the request
           setError(`Request error: ${axiosError.message}`);
         }
       } else {
         // Handle non-Axios errors
-        setError('An unexpected error occurred');
+        setError(
+          t('resources.unexpectedError', 'An unexpected error occurred')
+        );
       }
       setTimeout(() => setError(''), 3000);
     }
@@ -167,13 +191,13 @@ const ResourcesForWomen: React.FC = () => {
         <div className="max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold text-purple-900">
-              Resources for Women
+              {t('resources.title', 'Resources for Women')}
             </h1>
             {isAuthenticated && (
               <Link
                 to="/add-resource"
                 className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">
-                Add New Resource
+                {t('resources.addNew', 'Add New Resource')}
               </Link>
             )}
           </div>
@@ -191,12 +215,17 @@ const ResourcesForWomen: React.FC = () => {
           {loading ? (
             <div className="text-center py-10">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-purple-500 border-t-transparent"></div>
-              <p className="mt-2 text-gray-600">Loading resources...</p>
+              <p className="mt-2 text-gray-600">
+                {t('resources.loading', 'Loading resources...')}
+              </p>
             </div>
           ) : resources.length === 0 ? (
             <div className="text-center py-10 bg-white shadow rounded-lg">
               <p className="text-gray-600">
-                No resources found. Be the first to add one!
+                {t(
+                  'resources.noResources',
+                  'No resources found. Be the first to add one!'
+                )}
               </p>
             </div>
           ) : (
@@ -257,7 +286,7 @@ const ResourcesForWomen: React.FC = () => {
                         <Link
                           to={`/resources/${resource._id}`}
                           className="inline-flex items-center text-purple-600 hover:text-purple-800 font-medium text-sm">
-                          Details
+                          {t('resources.details', 'Details')}
                           <svg
                             className="w-4 h-4 ml-1"
                             fill="currentColor"
@@ -287,7 +316,7 @@ const ResourcesForWomen: React.FC = () => {
                                 strokeWidth="2"
                                 d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                             </svg>
-                            Visit
+                            {t('resources.visit', 'Visit')}
                           </a>
                         )}
                       </div>
@@ -309,7 +338,7 @@ const ResourcesForWomen: React.FC = () => {
                                 strokeWidth="2"
                                 d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                             </svg>
-                            Edit
+                            {t('resources.edit', 'Edit')}
                           </Link>
 
                           <button
@@ -329,7 +358,7 @@ const ResourcesForWomen: React.FC = () => {
                                 strokeWidth="2"
                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                             </svg>
-                            Delete
+                            {t('resources.delete', 'Delete')}
                           </button>
                         </div>
                       )}
@@ -341,7 +370,7 @@ const ResourcesForWomen: React.FC = () => {
           )}
         </div>
       </main>
-      <Footer /> {/* Add the Footer component here */}
+      <Footer />
     </div>
   );
 };
