@@ -98,7 +98,6 @@ export const deleteResource = async (req, res) => {
 export const getResources = async (req, res) => {
   try {
     const { category, title, tags, sortBy } = req.query;
-    console.log('Filter query:', req.query); // Add logging
 
     // Build filter object
     const filter = {};
@@ -116,7 +115,6 @@ export const getResources = async (req, res) => {
       filter.tags = { $in: Array.isArray(tags) ? tags : [tags] };
     }
 
-    console.log('MongoDB filter:', filter); // Add logging
 
     // Build sort object
     let sort = {};
@@ -132,7 +130,6 @@ export const getResources = async (req, res) => {
       .sort(sort)
       .populate('user', 'name email');
 
-    console.log(`Found ${resources.length} resources`); // Add logging
     res.json(resources);
   } catch (error) {
     console.error('Error in getResources:', error); // Add logging

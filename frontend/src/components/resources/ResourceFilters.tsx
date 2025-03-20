@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { RESOURCE_CATEGORIES } from '../../utils/constants';
 
 interface ResourceFiltersProps {
@@ -9,20 +10,18 @@ export interface FilterOptions {
   category?: string;
   title?: string;
   sortBy?: 'newest' | 'oldest' | 'popular';
-  // Removed tags property
 }
 
 const ResourceFilters: React.FC<ResourceFiltersProps> = ({
   onFilterChange,
 }) => {
+  const { t } = useTranslation();
+
   const [filters, setFilters] = useState<FilterOptions>({
     category: '',
     title: '',
     sortBy: 'newest',
-    // Removed tags from initial state
   });
-
-  // Removed availableTags array
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newFilters = { ...filters, category: e.target.value };
@@ -35,8 +34,6 @@ const ResourceFilters: React.FC<ResourceFiltersProps> = ({
     setFilters(newFilters);
     onFilterChange(newFilters);
   };
-
-  // Removed handleTagChange function
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newFilters = {
@@ -52,7 +49,6 @@ const ResourceFilters: React.FC<ResourceFiltersProps> = ({
       category: '',
       title: '',
       sortBy: 'newest',
-      // Removed tags from clear filters
     };
     setFilters(newFilters);
     onFilterChange(newFilters);
@@ -61,7 +57,7 @@ const ResourceFilters: React.FC<ResourceFiltersProps> = ({
   return (
     <div className="bg-white p-4 rounded-lg shadow mb-6">
       <h2 className="text-xl font-bold mb-4 text-purple-800">
-        Filter Resources
+        {t('resourceFilters.title', 'Filter Resources')}
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -69,14 +65,16 @@ const ResourceFilters: React.FC<ResourceFiltersProps> = ({
           <label
             htmlFor="category"
             className="block text-sm font-medium text-gray-700 mb-1">
-            Category
+            {t('resourceFilters.category', 'Category')}
           </label>
           <select
             id="category"
             value={filters.category}
             onChange={handleCategoryChange}
             className="w-full p-2 border border-gray-300 rounded focus:ring-purple-500 focus:border-purple-500">
-            <option value="">All Categories</option>
+            <option value="">
+              {t('resourceFilters.allCategories', 'All Categories')}
+            </option>
             {RESOURCE_CATEGORIES.map((category) => (
               <option key={category} value={category}>
                 {category}
@@ -89,16 +87,22 @@ const ResourceFilters: React.FC<ResourceFiltersProps> = ({
           <label
             htmlFor="sort"
             className="block text-sm font-medium text-gray-700 mb-1">
-            Sort By
+            {t('resourceFilters.sortBy', 'Sort By')}
           </label>
           <select
             id="sort"
             value={filters.sortBy}
             onChange={handleSortChange}
             className="w-full p-2 border border-gray-300 rounded focus:ring-purple-500 focus:border-purple-500">
-            <option value="newest">Newest First</option>
-            <option value="oldest">Oldest First</option>
-            <option value="popular">Most Popular</option>
+            <option value="newest">
+              {t('resourceFilters.newestFirst', 'Newest First')}
+            </option>
+            <option value="oldest">
+              {t('resourceFilters.oldestFirst', 'Oldest First')}
+            </option>
+            <option value="popular">
+              {t('resourceFilters.mostPopular', 'Most Popular')}
+            </option>
           </select>
         </div>
       </div>
@@ -107,24 +111,25 @@ const ResourceFilters: React.FC<ResourceFiltersProps> = ({
         <label
           htmlFor="search"
           className="block text-sm font-medium text-gray-700 mb-1">
-          Search by Title
+          {t('resourceFilters.searchTitle', 'Search by Title')}
         </label>
         <input
           id="search"
           type="text"
-          placeholder="Search resources..."
+          placeholder={t(
+            'resourceFilters.searchPlaceholder',
+            'Search resources...'
+          )}
           value={filters.title}
           onChange={handleSearchChange}
           className="w-full p-2 border border-gray-300 rounded focus:ring-purple-500 focus:border-purple-500"
         />
       </div>
 
-      {/* Removed the tags section */}
-
       <button
         onClick={handleClearFilters}
         className="mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
-        Clear Filters
+        {t('resourceFilters.clearFilters', 'Clear Filters')}
       </button>
     </div>
   );

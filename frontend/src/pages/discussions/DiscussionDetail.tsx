@@ -11,8 +11,10 @@ import { useAuth } from '../../context/AuthContext';
 import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
 import { FaArrowLeft, FaEdit, FaTrash, FaUser, FaClock } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 const DiscussionDetail: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const [discussion, setDiscussion] = useState<Discussion | null>(null);
   const [comment, setComment] = useState('');
@@ -76,7 +78,14 @@ const DiscussionDetail: React.FC = () => {
   const handleDeleteDiscussion = async () => {
     if (!id || !token) return;
 
-    if (!window.confirm('Are you sure you want to delete this discussion?')) {
+    if (
+      !window.confirm(
+        t(
+          'discussions.deleteConfirm',
+          'Are you sure you want to delete this discussion?'
+        )
+      )
+    ) {
       return;
     }
 
@@ -97,7 +106,14 @@ const DiscussionDetail: React.FC = () => {
   const handleDeleteComment = async (commentId: string) => {
     if (!id || !token) return;
 
-    if (!window.confirm('Are you sure you want to delete this comment?')) {
+    if (
+      !window.confirm(
+        t(
+          'discussions.deleteConfirm',
+          'Are you sure you want to delete this comment?'
+        )
+      )
+    ) {
       return;
     }
 
@@ -128,7 +144,10 @@ const DiscussionDetail: React.FC = () => {
       hour: '2-digit',
       minute: '2-digit',
     };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+    return new Date(dateString).toLocaleDateString(
+      i18n.language === 'rw' ? 'fr-RW' : undefined,
+      options
+    );
   };
 
   // Check if the current user can modify the discussion
@@ -144,7 +163,8 @@ const DiscussionDetail: React.FC = () => {
           <Link
             to="/discussions"
             className="inline-flex items-center text-purple-600 hover:text-purple-800 mb-6">
-            <FaArrowLeft className="mr-2" /> Back to discussions
+            <FaArrowLeft className="mr-2" />{' '}
+            {t('discussions.back', 'Back to discussions')}
           </Link>
 
           {/* Error message */}
@@ -158,7 +178,9 @@ const DiscussionDetail: React.FC = () => {
           {loading && !discussion ? (
             <div className="text-center py-10">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-purple-500 border-t-transparent"></div>
-              <p className="mt-2 text-gray-600">Loading discussion...</p>
+              <p className="mt-2 text-gray-600">
+                {t('discussions.loading', 'Loading discussions...')}
+              </p>
             </div>
           ) : error && !discussion ? (
             <div className="bg-white rounded-lg shadow-md p-6 text-center">
@@ -166,7 +188,7 @@ const DiscussionDetail: React.FC = () => {
               <Link
                 to="/discussions"
                 className="inline-block text-purple-600 hover:text-purple-800">
-                View all discussions
+                {t('discussions.viewAll', 'View all discussions')}
               </Link>
             </div>
           ) : discussion ? (
@@ -185,7 +207,8 @@ const DiscussionDetail: React.FC = () => {
                 <div className="mt-2 flex items-center text-sm text-gray-500">
                   <FaUser className="mr-1" />
                   <span>
-                    Posted by {discussion.user?.name || 'Unknown User'}
+                    {t('discussions.postedBy', 'Posted by')}{' '}
+                    {discussion.user?.name || 'Unknown User'}
                   </span>
                   <span className="mx-2">•</span>
                   <FaClock className="mr-1" />
@@ -203,12 +226,14 @@ const DiscussionDetail: React.FC = () => {
                     <Link
                       to={`/discussions/edit/${discussion._id}`}
                       className="inline-flex items-center text-blue-600 hover:text-blue-800">
-                      <FaEdit className="mr-1" /> Edit
+                      <FaEdit className="mr-1" />{' '}
+                      {t('discussions.edit', 'Edit')}
                     </Link>
                     <button
                       onClick={handleDeleteDiscussion}
                       className="inline-flex items-center text-red-600 hover:text-red-800">
-                      <FaTrash className="mr-1" /> Delete
+                      <FaTrash className="mr-1" />{' '}
+                      {t('discussions.delete', 'Delete')}
                     </button>
                   </div>
                 )}
@@ -217,7 +242,8 @@ const DiscussionDetail: React.FC = () => {
               {/* Comments section */}
               <div className="p-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-6">
-                  Comments ({discussion.comments?.length || 0})
+                  {t('discussions.commentsTitle', 'Comments')} (
+                  {discussion.comments?.length || 0})
                 </h2>
 
                 {/* Comment form */}
@@ -227,7 +253,7 @@ const DiscussionDetail: React.FC = () => {
                       <label
                         htmlFor="comment"
                         className="block text-sm font-medium text-gray-700 mb-1">
-                        Add a comment
+                        {t('discussions.addComment', 'Add a comment')}
                       </label>
                       <textarea
                         id="comment"
@@ -246,23 +272,20 @@ const DiscussionDetail: React.FC = () => {
                       {submitLoading ? (
                         <>
                           <span className="inline-block animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></span>
-                          Posting...
+                          {t('discussions.posting', 'Posting...')}
                         </>
                       ) : (
-                        'Post Comment'
+                        t('discussions.postComment', 'Post Comment')
                       )}
                     </button>
                   </form>
                 ) : (
                   <div className="mb-8 p-4 bg-gray-100 rounded-md text-center">
                     <p className="text-gray-700">
-                      Please{' '}
-                      <Link
-                        to="/login"
-                        className="text-purple-600 hover:text-purple-800">
-                        sign in
-                      </Link>{' '}
-                      to join the discussion.
+                      {t(
+                        'discussions.signInToComment',
+                        'Please sign in to join the discussion.'
+                      )}
                     </p>
                   </div>
                 )}
@@ -271,7 +294,10 @@ const DiscussionDetail: React.FC = () => {
                 <div className="space-y-6">
                   {!discussion.comments || discussion.comments.length === 0 ? (
                     <p className="text-gray-500 text-center py-6">
-                      No comments yet. Be the first to comment!
+                      {t(
+                        'discussions.noComments',
+                        'No comments yet. Be the first to comment!'
+                      )}
                     </p>
                   ) : (
                     discussion.comments.map((comment: Comment) => (
@@ -302,11 +328,12 @@ const DiscussionDetail: React.FC = () => {
                                 {deletingComments[comment._id] ? (
                                   <>
                                     <span className="animate-spin h-3 w-3 border-2 border-red-500 border-opacity-50 border-t-transparent rounded-full mr-1"></span>
-                                    Deleting...
+                                    {t('discussions.deleting', 'Deleting...')}
                                   </>
                                 ) : (
                                   <>
-                                    <FaTrash className="mr-1" /> Delete
+                                    <FaTrash className="mr-1" />{' '}
+                                    {t('discussions.delete', 'Delete')}
                                   </>
                                 )}
                               </button>
@@ -321,12 +348,15 @@ const DiscussionDetail: React.FC = () => {
           ) : (
             <div className="text-center py-10 bg-white rounded-lg shadow-md">
               <p className="text-gray-700">
-                Discussion not found or has been deleted.
+                {t(
+                  'discussions.notFound',
+                  'Discussion not found or has been deleted.'
+                )}
               </p>
               <Link
                 to="/discussions"
                 className="mt-4 inline-block text-purple-600 hover:text-purple-800">
-                View all discussions
+                {t('discussions.viewAll', 'View all discussions')}
               </Link>
             </div>
           )}

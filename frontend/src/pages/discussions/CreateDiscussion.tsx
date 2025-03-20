@@ -4,8 +4,10 @@ import { createDiscussion } from '../../services/discussionService';
 import { useAuth } from '../../context/AuthContext';
 import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
+import { useTranslation } from 'react-i18next';
 
 const CreateDiscussion: React.FC = () => {
+  const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('');
@@ -16,12 +18,12 @@ const CreateDiscussion: React.FC = () => {
   const navigate = useNavigate();
 
   const categories = [
-    'Health Advice',
-    'Financial Support',
-    'Job Opportunities',
-    'Education',
-    'General',
-    'Other',
+    t('discussionCategories.healthAdvice.title', 'Health Advice'),
+    t('discussionCategories.financialSupport.title', 'Financial Support'),
+    t('discussionCategories.jobOpportunities.title', 'Job Opportunities'),
+    t('discussionCategories.education.title', 'Education'),
+    t('discussionCategories.general.title', 'General'),
+    t('discussionCategories.other.title', 'Other'),
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -29,22 +31,29 @@ const CreateDiscussion: React.FC = () => {
 
     // Form validation
     if (!title.trim()) {
-      setError('Title is required');
+      setError(t('createDiscussion.titleRequired', 'Title is required'));
       return;
     }
 
     if (!content.trim()) {
-      setError('Content is required');
+      setError(t('createDiscussion.contentRequired', 'Content is required'));
       return;
     }
 
     if (!category) {
-      setError('Please select a category');
+      setError(
+        t('createDiscussion.categoryRequired', 'Please select a category')
+      );
       return;
     }
 
     if (!token) {
-      setError('You must be logged in to create a discussion');
+      setError(
+        t(
+          'createDiscussion.mustLogIn',
+          'You must be logged in to create a discussion'
+        )
+      );
       return;
     }
 
@@ -60,7 +69,9 @@ const CreateDiscussion: React.FC = () => {
       navigate(`/discussions/${discussion._id}`);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : 'Failed to create discussion'
+        err instanceof Error
+          ? err.message
+          : t('createDiscussion.failedToCreate', 'Failed to create discussion')
       );
       console.error('Error creating discussion:', err);
     } finally {
@@ -74,7 +85,7 @@ const CreateDiscussion: React.FC = () => {
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto bg-white shadow rounded-lg p-6">
           <h1 className="text-2xl font-bold text-purple-900 mb-6">
-            Start a New Discussion
+            {t('createDiscussion.title', 'Start a New Discussion')}
           </h1>
 
           {error && (
@@ -89,7 +100,7 @@ const CreateDiscussion: React.FC = () => {
               <label
                 htmlFor="title"
                 className="block text-sm font-medium text-gray-700 mb-1">
-                Title *
+                {t('createDiscussion.titleField', 'Title')} *
               </label>
               <input
                 type="text"
@@ -97,7 +108,10 @@ const CreateDiscussion: React.FC = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-                placeholder="What do you want to discuss?"
+                placeholder={t(
+                  'createDiscussion.titlePlaceholder',
+                  'What do you want to discuss?'
+                )}
                 required
               />
             </div>
@@ -107,7 +121,7 @@ const CreateDiscussion: React.FC = () => {
               <label
                 htmlFor="category"
                 className="block text-sm font-medium text-gray-700 mb-1">
-                Category *
+                {t('createDiscussion.category', 'Category')} *
               </label>
               <select
                 id="category"
@@ -116,7 +130,7 @@ const CreateDiscussion: React.FC = () => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
                 required>
                 <option value="" disabled>
-                  Select a category
+                  {t('createDiscussion.selectCategory', 'Select a category')}
                 </option>
                 {categories.map((cat) => (
                   <option key={cat} value={cat}>
@@ -131,7 +145,7 @@ const CreateDiscussion: React.FC = () => {
               <label
                 htmlFor="content"
                 className="block text-sm font-medium text-gray-700 mb-1">
-                Content *
+                {t('createDiscussion.content', 'Content')} *
               </label>
               <textarea
                 id="content"
@@ -139,7 +153,10 @@ const CreateDiscussion: React.FC = () => {
                 onChange={(e) => setContent(e.target.value)}
                 rows={8}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-                placeholder="Share your thoughts, questions, or experiences..."
+                placeholder={t(
+                  'createDiscussion.contentPlaceholder',
+                  'Share your thoughts, questions, or experiences...'
+                )}
                 required
               />
             </div>
@@ -153,10 +170,10 @@ const CreateDiscussion: React.FC = () => {
                 {loading ? (
                   <>
                     <span className="inline-block animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></span>
-                    Creating...
+                    {t('createDiscussion.creating', 'Creating...')}
                   </>
                 ) : (
-                  'Post Discussion'
+                  t('createDiscussion.postDiscussion', 'Post Discussion')
                 )}
               </button>
             </div>

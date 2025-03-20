@@ -1,29 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Hero: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="py-12 md:py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         <div className="space-y-6">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-purple-900 leading-tight">
-            Empowering Women in Rwanda
+            {t('hero.title')}
           </h1>
           <p className="text-lg text-gray-700 leading-relaxed">
-            Join our platform to access resources, connect with events, and find
-            job opportunities tailored for women in Rwanda. We're here to
-            support your personal and professional growth.
+            {t('hero.description')}
           </p>
           <div className="flex flex-wrap gap-4 pt-2">
             <Link
               to="/resources"
               className="px-6 py-3 bg-purple-600 text-white rounded-md shadow-md hover:bg-purple-700 transition-colors font-medium">
-              Get Started
+              {t('hero.getStarted')}
             </Link>
             <Link
               to="/community"
               className="px-6 py-3 border border-purple-600 text-purple-600 rounded-md hover:bg-purple-50 transition-colors font-medium">
-              Join Community
+              {t('hero.joinCommunity', 'Join Community')}
             </Link>
           </div>
         </div>

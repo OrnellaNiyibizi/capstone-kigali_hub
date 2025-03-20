@@ -1,12 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '../languageSwitcher';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { user, isAuthenticated, logout } = useAuth();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -32,7 +35,7 @@ const Header: React.FC = () => {
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="text-2xl md:text-3xl font-bold text-white">
-              Rwanda Women Hub
+              {t('site.name', 'Rwanda Women Hub')}
             </Link>
           </div>
 
@@ -41,18 +44,21 @@ const Header: React.FC = () => {
             <Link
               to="/"
               className="text-white hover:text-purple-200 transition-colors">
-              Home
+              {t('nav.home', 'Home')}
             </Link>
             <Link
               to="/resources"
               className="text-white hover:text-purple-200 transition-colors">
-              Resources
+              {t('nav.resources', 'Resources')}
             </Link>
             <Link
               to="/community"
               className="text-white hover:text-purple-200 transition-colors">
-              Discussion
+              {t('nav.discussion', 'Discussion')}
             </Link>
+
+            {/* Language Switcher - Desktop */}
+            <LanguageSwitcher />
 
             {isAuthenticated ? (
               <div className="relative" ref={dropdownRef}>
@@ -71,13 +77,13 @@ const Header: React.FC = () => {
                       to="/profile"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={() => setIsProfileOpen(false)}>
-                      Your Profile
+                      {t('nav.profile', 'Your Profile')}
                     </Link>
                     <Link
                       to="/add-resource"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={() => setIsProfileOpen(false)}>
-                      Add Resource
+                      {t('nav.addResource', 'Add Resource')}
                     </Link>
                     <button
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -85,7 +91,7 @@ const Header: React.FC = () => {
                         logout();
                         setIsProfileOpen(false);
                       }}>
-                      Sign out
+                      {t('nav.signOut', 'Sign out')}
                     </button>
                   </div>
                 )}
@@ -95,19 +101,22 @@ const Header: React.FC = () => {
                 <Link
                   to="/login"
                   className="px-4 py-2 rounded-md font-medium text-purple-600 bg-white hover:bg-purple-100 transition-colors">
-                  Sign In
+                  {t('nav.signIn', 'Sign In')}
                 </Link>
                 <Link
                   to="/register"
                   className="px-4 py-2 rounded-md font-medium text-white border border-white hover:bg-purple-500 transition-colors">
-                  Sign Up
+                  {t('nav.signUp', 'Sign Up')}
                 </Link>
               </div>
             )}
           </nav>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-3">
+            {/* Language Switcher - Mobile (Always visible) */}
+            <LanguageSwitcher />
+
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-white p-2">
@@ -150,17 +159,17 @@ const Header: React.FC = () => {
             <Link
               to="/"
               className="block py-2 text-white hover:bg-purple-500 px-2 rounded">
-              Home
+              {t('nav.home', 'Home')}
             </Link>
             <Link
               to="/resources"
               className="block py-2 text-white hover:bg-purple-500 px-2 rounded">
-              Resources
+              {t('nav.resources', 'Resources')}
             </Link>
             <Link
               to="/community"
               className="block py-2 text-white hover:bg-purple-500 px-2 rounded">
-              Discussion
+              {t('nav.discussion', 'Discussion')}
             </Link>
 
             {isAuthenticated ? (
@@ -168,17 +177,17 @@ const Header: React.FC = () => {
                 <Link
                   to="/profile"
                   className="block py-2 text-white hover:bg-purple-500 px-2 rounded">
-                  Your Profile
+                  {t('nav.profile', 'Your Profile')}
                 </Link>
                 <Link
                   to="/add-resource"
                   className="block py-2 text-white hover:bg-purple-500 px-2 rounded">
-                  Add Resource
+                  {t('nav.addResource', 'Add Resource')}
                 </Link>
                 <button
                   onClick={logout}
                   className="block w-full text-left py-2 text-white hover:bg-purple-500 px-2 rounded">
-                  Sign out
+                  {t('nav.signOut', 'Sign out')}
                 </button>
               </>
             ) : (
@@ -186,12 +195,12 @@ const Header: React.FC = () => {
                 <Link
                   to="/login"
                   className="block py-2 text-white hover:bg-purple-500 px-2 rounded">
-                  Sign In
+                  {t('nav.signIn', 'Sign In')}
                 </Link>
                 <Link
                   to="/register"
                   className="block py-2 text-white hover:bg-purple-500 px-2 rounded">
-                  Sign Up
+                  {t('nav.signUp', 'Sign Up')}
                 </Link>
               </>
             )}
