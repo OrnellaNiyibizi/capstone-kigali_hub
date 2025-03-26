@@ -19,6 +19,14 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 6
   },
+  refreshTokens: [{
+    token: String,
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      expires: '7d' // Auto-expire after 7 days
+    }
+  }],
   createdAt: {
     type: Date,
     default: Date.now
@@ -33,7 +41,6 @@ userSchema.pre('save', async function (next) {
   try {
     // Generate a salt
     const salt = await bcrypt.genSalt(10);
-
     // Hash the password along with the new salt
     this.password = await bcrypt.hash(this.password, salt);
     next();
@@ -52,5 +59,4 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 };
 
 const User = mongoose.model('User', userSchema);
-
 export default User;

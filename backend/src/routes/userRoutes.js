@@ -6,7 +6,9 @@ import {
   updateUser,
   deleteUser,
   loginUser,
-  getUserProfile
+  getUserProfile,
+  refreshToken,
+  logoutUser
 } from '../controllers/userController.js';
 import auth from '../middleware/auth.js';
 
@@ -15,6 +17,8 @@ const router = express.Router();
 // Public routes
 router.post('/register', createUser);
 router.post('/login', loginUser);
+router.post('/refresh-token', refreshToken);
+router.post('/logout', logoutUser);
 
 // Protected routes
 router.get('/profile', auth, getUserProfile);

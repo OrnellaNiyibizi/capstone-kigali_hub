@@ -3,13 +3,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const config = {
-
   PORT: process.env.PORT,
   DB_URI: process.env.DB_URI,
   JWT_SECRET: process.env.JWT_SECRET,
+  REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || process.env.JWT_SECRET + '_refresh',
   HOST: process.env.HOST,
 };
-
 
 if (!config.PORT) {
   throw new Error('PORT is not defined');
