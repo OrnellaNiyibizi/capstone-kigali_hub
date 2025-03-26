@@ -1,6 +1,6 @@
 {
   "hero": {
-    "title": "Guha Ububasha Abagore bo mu Rwanda",
+    "title": "Rwanda Women  Hub",
     "description": "Ifatanye na purogaramu yacu kugira ngo ubone ibikoresho, wihuze n'ibikorwa, kandi ubone amahirwe y'akazi yagenewe abagore bo mu Rwanda. Turi hano kugira ngo dushyigikire iterambere ryawe bwite n'umwuga.",
     "getStarted": "Tangira",
     "joinCommunity": "Ifatanye n'Umuryango"
@@ -234,7 +234,7 @@
     "deleteUnexpectedError": "Gusiba igikoresho byanze kubera ikosa ritateganyijwe"
   },
   "footer": {
-    "tagline": "Guha ububasha abagore bo mu Rwanda binyuze mu bikoresho, umuryango, n'ubufasha.",
+    "tagline": "Rwanda Women  Hub binyuze mu bikoresho, umuryango, n'ubufasha.",
     "quickLinks": "Aho Ujya Vuba",
     "about": "Turi Ba Nde",
     "contact": "Twandikire",

@@ -1,6 +1,11 @@
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
 import config from '../utils/config.js';
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  verifyRefreshToken
+} from '../utils/authUtils.js';
 
 // Get all users
 export const getAllUsers = async (req, res) => {
@@ -29,7 +34,6 @@ export const getUserById = async (req, res) => {
   }
 };
 
-
 export const createUser = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -42,16 +46,23 @@ export const createUser = async (req, res) => {
     const user = new User({ name, email, password });
     const newUser = await user.save();
 
-    // Generate JWT token
-    const token = jwt.sign(
-      {
-        id: newUser._id,
-        email: newUser.email,
-        name: newUser.name
-      },
-      config.JWT_SECRET,
-      { expiresIn: '24h' }
+    // Generate tokens
+    const accessToken = generateAccessToken(newUser._id);
+    const refreshToken = generateRefreshToken(newUser._id);
+
+    // Save refresh token to database
+    await User.findByIdAndUpdate(
+      newUser._id,
+      { $push: { refreshTokens: { token: refreshToken } } }
     );
+
+    // Set refresh token in HTTP-only cookie
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // secure in production
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
 
     // Prevent caching of authentication responses
     res.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
@@ -59,14 +70,12 @@ export const createUser = async (req, res) => {
       userId: newUser._id,
       name: newUser.name,
       email: newUser.email,
-      token: token
+      token: accessToken
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
-
-
 
 // Update a user
 export const updateUser = async (req, res) => {
@@ -123,16 +132,23 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    // Generate JWT
-    const token = jwt.sign(
-      {
-        id: user._id,
-        email: user.email,
-        name: user.name
-      },
-      config.JWT_SECRET,
-      { expiresIn: '24h' } // Token expires in 24 hours
+    // Generate tokens
+    const accessToken = generateAccessToken(user._id);
+    const refreshToken = generateRefreshToken(user._id);
+
+    // Save refresh token to database
+    await User.findByIdAndUpdate(
+      user._id,
+      { $push: { refreshTokens: { token: refreshToken } } }
     );
+
+    // Set refresh token in HTTP-only cookie
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // secure in production
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
 
     // Prevent caching of authentication responses
     res.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
@@ -141,7 +157,7 @@ export const loginUser = async (req, res) => {
       userId: user._id,
       name: user.name,
       email: user.email,
-      token: token
+      token: accessToken
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -160,6 +176,89 @@ export const getUserProfile = async (req, res) => {
     // No caching for user profile
     res.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
     res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Refresh token endpoint
+export const refreshToken = async (req, res) => {
+  try {
+    const { refreshToken } = req.cookies;
+
+    if (!refreshToken) {
+      return res.status(401).json({ message: 'Refresh token required' });
+    }
+
+    // Verify the refresh token
+    const { valid, expired, id } = verifyRefreshToken(refreshToken);
+
+    if (!valid) {
+      return res.status(401).json({ message: 'Invalid refresh token' });
+    }
+
+    if (expired) {
+      return res.status(401).json({ message: 'Refresh token expired' });
+    }
+
+    // Find the user with this refresh token
+    const user = await User.findOne({
+      _id: id,
+      'refreshTokens.token': refreshToken
+    });
+
+    if (!user) {
+      return res.status(401).json({ message: 'User not found or token revoked' });
+    }
+
+    // Generate new tokens
+    const newAccessToken = generateAccessToken(user._id);
+    const newRefreshToken = generateRefreshToken(user._id);
+
+    // Remove old refresh token and add new one
+    await User.findByIdAndUpdate(user._id, {
+      $pull: { refreshTokens: { token: refreshToken } },
+      $push: { refreshTokens: { token: newRefreshToken } }
+    });
+
+    // Set new refresh token in cookie
+    res.cookie('refreshToken', newRefreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+
+    // Prevent caching
+    res.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+
+    // Return new access token
+    res.json({
+      message: 'Token refreshed successfully',
+      token: newAccessToken
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Logout user
+export const logoutUser = async (req, res) => {
+  try {
+    const { refreshToken } = req.cookies;
+
+    if (refreshToken) {
+      // Find user with this token and remove it
+      await User.updateOne(
+        { 'refreshTokens.token': refreshToken },
+        { $pull: { refreshTokens: { token: refreshToken } } }
+      );
+
+      // Clear the cookie
+      res.clearCookie('refreshToken');
+    }
+
+    res.status(200).json({ message: 'Logged out successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

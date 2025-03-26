@@ -10,6 +10,16 @@ import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
 import { useTranslation } from 'react-i18next';
 
+// Define category keys that exactly match backend enum values
+const CATEGORY_KEYS = {
+  HEALTH_ADVICE: 'Health Advice',
+  FINANCIAL_SUPPORT: 'Financial Support',
+  JOB_OPPORTUNITIES: 'Job Opportunities',
+  EDUCATION: 'Education',
+  GENERAL: 'General',
+  OTHER: 'Other',
+};
+
 const AddEditDiscussion: React.FC = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id?: string }>();
@@ -91,13 +101,38 @@ const AddEditDiscussion: React.FC = () => {
     }
   };
 
+  // Use translation only for display, but keep the actual values matching backend enum
   const categories = [
-    t('discussionCategories.healthAdvice.title', 'Health Advice'),
-    t('discussionCategories.financialSupport.title', 'Financial Support'),
-    t('discussionCategories.jobOpportunities.title', 'Job Opportunities'),
-    t('discussionCategories.education.title', 'Education'),
-    t('discussionCategories.general.title', 'General'),
-    t('discussionCategories.other.title', 'Other'),
+    {
+      key: CATEGORY_KEYS.HEALTH_ADVICE,
+      display: t('discussionCategories.healthAdvice.title', 'Health Advice'),
+    },
+    {
+      key: CATEGORY_KEYS.FINANCIAL_SUPPORT,
+      display: t(
+        'discussionCategories.financialSupport.title',
+        'Financial Support'
+      ),
+    },
+    {
+      key: CATEGORY_KEYS.JOB_OPPORTUNITIES,
+      display: t(
+        'discussionCategories.jobOpportunities.title',
+        'Job Opportunities'
+      ),
+    },
+    {
+      key: CATEGORY_KEYS.EDUCATION,
+      display: t('discussionCategories.education.title', 'Education'),
+    },
+    {
+      key: CATEGORY_KEYS.GENERAL,
+      display: t('discussionCategories.general.title', 'General'),
+    },
+    {
+      key: CATEGORY_KEYS.OTHER,
+      display: t('discussionCategories.other.title', 'Other'),
+    },
   ];
 
   return (
@@ -162,8 +197,8 @@ const AddEditDiscussion: React.FC = () => {
                     {t('createDiscussion.selectCategory', 'Select a category')}
                   </option>
                   {categories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
+                    <option key={cat.key} value={cat.key}>
+                      {cat.display}
                     </option>
                   ))}
                 </select>

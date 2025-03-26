@@ -5,6 +5,16 @@ import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
 import { useTranslation } from 'react-i18next';
 
+// Define category keys that exactly match backend enum values
+const CATEGORY_KEYS = {
+  HEALTH_ADVICE: 'Health Advice',
+  FINANCIAL_SUPPORT: 'Financial Support',
+  JOB_OPPORTUNITIES: 'Job Opportunities',
+  EDUCATION: 'Education',
+  GENERAL: 'General',
+  OTHER: 'Other',
+};
+
 const CommunityForum: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -12,7 +22,7 @@ const CommunityForum: React.FC = () => {
 
   const categories = [
     {
-      key: 'healthAdvice',
+      key: CATEGORY_KEYS.HEALTH_ADVICE,
       title: t('discussionCategories.healthAdvice.title', 'Health Advice'),
       description: t(
         'discussionCategories.healthAdvice.description',
@@ -20,7 +30,7 @@ const CommunityForum: React.FC = () => {
       ),
     },
     {
-      key: 'financialSupport',
+      key: CATEGORY_KEYS.FINANCIAL_SUPPORT,
       title: t(
         'discussionCategories.financialSupport.title',
         'Financial Support'
@@ -31,7 +41,7 @@ const CommunityForum: React.FC = () => {
       ),
     },
     {
-      key: 'jobOpportunities',
+      key: CATEGORY_KEYS.JOB_OPPORTUNITIES,
       title: t(
         'discussionCategories.jobOpportunities.title',
         'Job Opportunities'
@@ -42,7 +52,7 @@ const CommunityForum: React.FC = () => {
       ),
     },
     {
-      key: 'education',
+      key: CATEGORY_KEYS.EDUCATION,
       title: t('discussionCategories.education.title', 'Education'),
       description: t(
         'discussionCategories.education.description',
@@ -50,7 +60,7 @@ const CommunityForum: React.FC = () => {
       ),
     },
     {
-      key: 'technology',
+      key: CATEGORY_KEYS.TECHNOLOGY,
       title: t('discussionCategories.technology.title', 'Technology'),
       description: t(
         'discussionCategories.technology.description',
@@ -113,7 +123,7 @@ const CommunityForum: React.FC = () => {
                 <div
                   key={category.key}
                   className="bg-white p-5 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer"
-                  onClick={() => navigateToDiscussions(category.title)}>
+                  onClick={() => navigateToDiscussions(category.key)}>
                   <h3 className="text-xl font-semibold text-purple-800">
                     {category.title}
                   </h3>

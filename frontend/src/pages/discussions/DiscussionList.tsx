@@ -7,22 +7,61 @@ import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
 import { useTranslation } from 'react-i18next';
 
+// Define category keys that exactly match backend enum values
+const CATEGORY_KEYS = {
+  ALL: 'All', // Special case for frontend filtering
+  HEALTH_ADVICE: 'Health Advice',
+  FINANCIAL_SUPPORT: 'Financial Support',
+  JOB_OPPORTUNITIES: 'Job Opportunities',
+  EDUCATION: 'Education',
+  GENERAL: 'General',
+  OTHER: 'Other',
+};
+
 const DiscussionList: React.FC = () => {
   const { t, i18n } = useTranslation();
   const [discussions, setDiscussions] = useState<Discussion[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState(CATEGORY_KEYS.ALL);
   const { isAuthenticated } = useAuth();
 
+  // Define categories with display names that can be translated
   const categories = [
-    'All',
-    t('discussionCategories.healthAdvice.title', 'Health Advice'),
-    t('discussionCategories.financialSupport.title', 'Financial Support'),
-    t('discussionCategories.jobOpportunities.title', 'Job Opportunities'),
-    t('discussionCategories.education.title', 'Education'),
-    t('discussionCategories.general.title', 'General'),
-    t('discussionCategories.other.title', 'Other'),
+    {
+      key: CATEGORY_KEYS.ALL,
+      display: t('discussionCategories.all.title', 'All'),
+    },
+    {
+      key: CATEGORY_KEYS.HEALTH_ADVICE,
+      display: t('discussionCategories.healthAdvice.title', 'Health Advice'),
+    },
+    {
+      key: CATEGORY_KEYS.FINANCIAL_SUPPORT,
+      display: t(
+        'discussionCategories.financialSupport.title',
+        'Financial Support'
+      ),
+    },
+    {
+      key: CATEGORY_KEYS.JOB_OPPORTUNITIES,
+      display: t(
+        'discussionCategories.jobOpportunities.title',
+        'Job Opportunities'
+      ),
+    },
+    {
+      key: CATEGORY_KEYS.EDUCATION,
+      display: t('discussionCategories.education.title', 'Education'),
+    },
+    {
+      key: CATEGORY_KEYS.GENERAL,
+      display: t('discussionCategories.general.title', 'General'),
+    },
+    {
+      key: CATEGORY_KEYS.OTHER,
+      display: t('discussionCategories.other.title', 'Other'),
+    },
   ];
 
   useEffect(() => {
@@ -30,7 +69,7 @@ const DiscussionList: React.FC = () => {
       try {
         setLoading(true);
         const category =
-          selectedCategory === 'All' ? undefined : selectedCategory;
+          selectedCategory === CATEGORY_KEYS.ALL ? undefined : selectedCategory;
         const data = await fetchDiscussions(category);
         setDiscussions(data);
       } catch (err) {
@@ -85,14 +124,14 @@ const DiscussionList: React.FC = () => {
             <div className="flex flex-wrap gap-2">
               {categories.map((category) => (
                 <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
+                  key={category.key}
+                  onClick={() => setSelectedCategory(category.key)}
                   className={`px-3 py-1 rounded-full text-sm ${
-                    selectedCategory === category
+                    selectedCategory === category.key
                       ? 'bg-purple-600 text-white'
                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   }`}>
-                  {category}
+                  {category.display}
                 </button>
               ))}
             </div>
