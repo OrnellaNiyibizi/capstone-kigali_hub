@@ -25,6 +25,8 @@ const DiscussionList: React.FC = () => {
   const [error, setError] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(CATEGORY_KEYS.ALL);
   const { isAuthenticated } = useAuth();
+  // Add state to track online status
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
 
   // Define categories with display names that can be translated
   const categories = [
@@ -63,6 +65,20 @@ const DiscussionList: React.FC = () => {
       display: t('discussionCategories.other.title', 'Other'),
     },
   ];
+
+  // Listen for online/offline events
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   useEffect(() => {
     const loadDiscussions = async () => {
@@ -107,7 +123,7 @@ const DiscussionList: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-900">
               {t('discussions.title', 'Discussions')}
             </h1>
-            {isAuthenticated && (
+            {isAuthenticated && isOnline && (
               <Link
                 to="/discussions/new"
                 className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition">
@@ -158,11 +174,20 @@ const DiscussionList: React.FC = () => {
                 {t('discussions.noDiscussions', 'No discussions found.')}
               </p>
               {isAuthenticated ? (
-                <Link
-                  to="/discussions/create"
-                  className="inline-block px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition">
-                  {t('discussions.startFirst', 'Start the first discussion')}
-                </Link>
+                isOnline ? (
+                  <Link
+                    to="/discussions/new"
+                    className="inline-block px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition">
+                    {t('discussions.startFirst', 'Start the first discussion')}
+                  </Link>
+                ) : (
+                  <p className="text-gray-500">
+                    {t(
+                      'discussions.offlineMode',
+                      'Cannot create discussions while offline'
+                    )}
+                  </p>
+                )
               ) : (
                 <p>
                   <Link to="/login" className="text-purple-600 hover:underline">

@@ -37,9 +37,25 @@ const ResourcesForWomen: React.FC = () => {
     title: '',
     sortBy: 'newest',
   });
+  // Add state to track online status
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
 
   // Debounce timer ref
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Listen for online/offline events
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   // Debounced fetch resources
   const debouncedFetchResources = useCallback(
@@ -193,7 +209,7 @@ const ResourcesForWomen: React.FC = () => {
             <h1 className="text-3xl font-bold text-purple-900">
               {t('resources.title', 'Resources for Women')}
             </h1>
-            {isAuthenticated && (
+            {isAuthenticated && isOnline && (
               <Link
                 to="/add-resource"
                 className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">
@@ -202,6 +218,7 @@ const ResourcesForWomen: React.FC = () => {
             )}
           </div>
           <ResourceFilters onFilterChange={handleFilterChange} />
+
           {error && (
             <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
               {error}

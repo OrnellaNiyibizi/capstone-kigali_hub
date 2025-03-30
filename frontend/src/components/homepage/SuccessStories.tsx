@@ -13,13 +13,14 @@ const SuccessStories: React.FC = () => {
 
   // Get stories from translations
   const story1 = {
-    name: t('successStories.stories.0.name', 'Jane Doe'),
+    name: t('successStories.stories.0.name', 'Jane Chioma'),
     role: t('successStories.stories.0.role', 'Software Developer'),
     content: t(
       'successStories.stories.0.content',
       'Thanks to Rwanda Women Hub, I found a job that I love and met amazing women who inspire me every day! The resources and networking opportunities have been invaluable to my career growth.'
     ),
-    image: 'https://randomuser.me/api/portraits/women/44.jpg',
+    image:
+      'https://images.unsplash.com/photo-1589156229687-496a31ad1d1f?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   };
 
   const story2 = {
@@ -29,7 +30,8 @@ const SuccessStories: React.FC = () => {
       'successStories.stories.1.content',
       "The resources provided here helped me start my own business. I couldn't have done it without this platform! The mentorship program connected me with experienced business leaders who guided me through challenges."
     ),
-    image: 'https://randomuser.me/api/portraits/women/68.jpg',
+    image:
+      'https://images.unsplash.com/photo-1729691031378-d63d7e81bb38?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   };
 
   const stories: Story[] = [story1, story2];

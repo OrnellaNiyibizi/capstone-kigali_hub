@@ -76,16 +76,23 @@ const DiscussionDetail: React.FC = () => {
 
   // Delete the entire discussion
   const handleDeleteDiscussion = async () => {
-    if (!id || !token) return;
+    if (!id || !token || !discussion) return;
 
-    if (
-      !window.confirm(
-        t(
-          'discussions.deleteConfirm',
-          'Are you sure you want to delete this discussion?'
-        )
-      )
-    ) {
+    let confirmMessage = t(
+      'discussions.deleteConfirm',
+      'Are you sure you want to delete this discussion?'
+    );
+
+    // Check if discussion has comments and provide a more specific warning
+    if (discussion.comments && discussion.comments.length > 0) {
+      confirmMessage = t(
+        'discussions.deleteWithCommentsConfirm',
+        'This discussion has {{count}} comments. Deleting it will remove all comments. Are you sure you want to proceed?',
+        { count: discussion.comments.length }
+      );
+    }
+
+    if (!window.confirm(confirmMessage)) {
       return;
     }
 
