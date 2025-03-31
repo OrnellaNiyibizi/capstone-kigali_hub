@@ -4,7 +4,7 @@ import config from './config.js';
 // Generate access token (short-lived, 15 minutes)
 export const generateAccessToken = (userId) => {
   return jwt.sign({ id: userId }, config.JWT_SECRET, {
-    expiresIn: '15m'
+    expiresIn: '30d'
   });
 };
 
