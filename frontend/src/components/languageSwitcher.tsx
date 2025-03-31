@@ -19,6 +19,13 @@ const LanguageSwitcher: React.FC = () => {
       </button>
       <button
         className={`px-3 py-1 rounded ${
+          i18n.language === 'fr' ? 'bg-purple-600 text-white' : 'bg-gray-200'
+        }`}
+        onClick={() => changeLanguage('fr')}>
+        Français
+      </button>
+      <button
+        className={`px-3 py-1 rounded ${
           i18n.language === 'rw' ? 'bg-purple-600 text-white' : 'bg-gray-200'
         }`}
         onClick={() => changeLanguage('rw')}>

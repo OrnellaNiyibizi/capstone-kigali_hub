@@ -1,0 +1,244 @@
+{
+  "hero": {
+    "title": "Autonomiser les Femmes au Rwanda",
+    "description": "Rejoignez notre plateforme pour accéder aux ressources, participer aux événements et trouver des opportunités d'emploi adaptées aux femmes au Rwanda. Nous sommes là pour soutenir votre croissance personnelle et professionnelle.",
+    "getStarted": "Commencer",
+    "joinCommunity": "Rejoindre la Communauté"
+  },
+  "objective": {
+    "title": "Notre Objectif",
+    "description": "Nous visons à autonomiser les femmes au Rwanda en leur fournissant un accès aux ressources essentielles, aux opportunités éducatives et à une communauté solidaire.\n\nNotre objectif est de favoriser la croissance, la collaboration et le succès des femmes dans notre ville, en créant des voies vers l'indépendance économique et le leadership."
+  },
+  "categories": {
+    "title": "Catégories en Vedette",
+    "healthcare": {
+      "name": "Santé",
+      "description": "Accédez à des ressources et services de santé adaptés aux femmes"
+    },
+    "education": {
+      "name": "Éducation",
+      "description": "Découvrez des opportunités d'apprentissage et des programmes de développement de compétences"
+    },
+    "finance": {
+      "name": "Finance",
+      "description": "Trouvez des ressources d'éducation financière et des opportunités de financement"
+    },
+    "networking": {
+      "name": "Réseautage",
+      "description": "Connectez-vous avec d'autres femmes professionnelles et des mentors"
+    }
+  },
+  "successStories": {
+    "title": "Histoires de Réussite",
+    "stories": [
+      {
+        "name": "Jane Doe",
+        "role": "Développeuse Logiciel",
+        "content": "Grâce au Rwanda Women Hub, j'ai trouvé un emploi que j'adore et rencontré des femmes extraordinaires qui m'inspirent chaque jour ! Les ressources et les opportunités de réseautage ont été inestimables pour l'évolution de ma carrière."
+      },
+      {
+        "name": "Mary Kwizera",
+        "role": "Entrepreneure",
+        "content": "Les ressources fournies ici m'ont aidée à créer ma propre entreprise. Je n'aurais pas pu le faire sans cette plateforme ! Le programme de mentorat m'a mise en contact avec des chefs d'entreprise expérimentés qui m'ont guidée à travers les difficultés."
+      }
+    ]
+  },
+  "callToAction": {
+    "title": "Rejoignez Notre Communauté Aujourd'hui",
+    "description": "Accédez à des ressources exclusives, des événements de réseautage et des opportunités d'emploi conçus spécifiquement pour les femmes au Rwanda.",
+    "joinNow": "Rejoindre Maintenant",
+    "exploreResources": "Explorer les Ressources"
+  },
+  "nav": {
+    "home": "Accueil",
+    "resources": "Ressources",
+    "discussion": "Discussion",
+    "profile": "Votre Profil",
+    "addResource": "Ajouter une Ressource",
+    "signOut": "Se déconnecter",
+    "signIn": "Se connecter",
+    "signUp": "S'inscrire"
+  },
+  "site": {
+    "name": "Rwanda Women Hub"
+  },
+  "resources": {
+    "title": "Ressources pour les Femmes",
+    "addNew": "Ajouter une Nouvelle Ressource",
+    "editResource": "Modifier la Ressource",
+    "loading": "Chargement des ressources...",
+    "noResources": "Aucune ressource trouvée. Soyez la première à en ajouter une !",
+    "details": "Détails",
+    "visit": "Visiter",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "deleteConfirm": "Êtes-vous sûre de vouloir supprimer cette ressource ?",
+    "deleteSuccess": "Ressource supprimée avec succès !",
+    "connectionError": "Pas de réponse du serveur. Veuillez vérifier votre connexion.",
+    "unexpectedError": "Une erreur inattendue s'est produite",
+    "titleField": "Titre",
+    "categoryField": "Catégorie",
+    "descriptionField": "Description",
+    "urlField": "URL",
+    "imageUrlField": "URL de l'image",
+    "businessInfo": "Informations sur l'entreprise",
+    "businessName": "Nom de l'entreprise",
+    "businessNamePlaceholder": "Nom de l'entreprise",
+    "businessAddress": "Adresse",
+    "businessAddressPlaceholder": "Adresse de l'entreprise",
+    "phoneNumber": "Numéro de téléphone",
+    "phoneNumberPlaceholder": "Numéro de téléphone de l'entreprise",
+    "location": "Emplacement",
+    "useMyLocation": "Utiliser ma position actuelle",
+    "coordinates": "Coordonnées",
+    "mapInstructions": "Cliquez sur la carte pour définir un emplacement, faites glisser le marqueur pour ajuster, ou utilisez le bouton de localisation pour définir votre position actuelle.",
+    "mapsNotConfigured": "Clé API Google Maps non configurée",
+    "geolocationNotSupported": "La géolocalisation n'est pas prise en charge par votre navigateur",
+    "locationPermissionDenied": "L'autorisation de localisation a été refusée",
+    "locationUnavailable": "Les informations de localisation ne sont pas disponibles",
+    "locationTimeout": "La demande de localisation a expiré",
+    "unknownLocationError": "Une erreur inconnue s'est produite",
+    "saving": "Enregistrement en cours...",
+    "update": "Mettre à jour",
+    "create": "Créer",
+    "updateSuccess": "Ressource mise à jour avec succès !",
+    "createSuccess": "Ressource créée avec succès !",
+    "saveError": "Échec de l'enregistrement de la ressource. Veuillez réessayer plus tard.",
+    "deleteError": "Échec de la suppression de la ressource",
+    "noResponse": "Aucune réponse reçue. La ressource a peut-être été supprimée.",
+    "requestError": "Erreur de requête",
+    "fetchError": "Échec de récupération de la ressource",
+    "selectCategory": "Sélectionner une catégorie"
+  },
+  "resourceFilters": {
+    "title": "Filtrer les Ressources",
+    "category": "Catégorie",
+    "allCategories": "Toutes les Catégories",
+    "sortBy": "Trier par",
+    "newestFirst": "Plus récent d'abord",
+    "oldestFirst": "Plus ancien d'abord",
+    "mostPopular": "Plus populaire",
+    "searchTitle": "Rechercher par titre",
+    "searchPlaceholder": "Rechercher des ressources...",
+    "clearFilters": "Effacer les filtres"
+  },
+  "community": {
+    "welcome": "Bienvenue dans Notre Communauté",
+    "description": "Connectez-vous avec d'autres femmes, partagez des expériences, posez des questions et trouvez du soutien.",
+    "startDiscussion": "Commencer une Nouvelle Discussion",
+    "signInToParticipate": "Connectez-vous pour Participer",
+    "browseDiscussions": "Parcourir les Discussions",
+    "discussionCategories": "Catégories de Discussion",
+    "browseTopics": "Parcourir les sujets →",
+    "guidelines": "Règles de la Communauté",
+    "guideline1": "Soyez respectueuse et attentionnée envers tous les membres de la communauté",
+    "guideline2": "Maintenez les discussions pertinentes aux intérêts et besoins des femmes",
+    "guideline3": "Partagez des expériences personnelles mais respectez la vie privée des autres",
+    "guideline4": "Fournissez des commentaires constructifs et du soutien",
+    "guideline5": "Signalez les contenus inappropriés aux modérateurs"
+  },
+  "discussions": {
+    "title": "Discussions",
+    "startDiscussion": "Démarrer une Discussion",
+    "filterByCategory": "Filtrer par catégorie",
+    "loading": "Chargement des discussions...",
+    "noDiscussions": "Aucune discussion trouvée.",
+    "startFirst": "Commencer la première discussion",
+    "signInToStart": "Connectez-vous pour démarrer une discussion",
+    "postedBy": "Publié par",
+    "readMore": "Lire plus →",
+    "comments": "commentaire",
+    "commentsPlural": "commentaires",
+    "back": "Retour aux discussions",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "deleteConfirm": "Êtes-vous sûre de vouloir supprimer cette discussion ?",
+    "commentsTitle": "Commentaires",
+    "addComment": "Ajouter un commentaire",
+    "posting": "Publication en cours...",
+    "postComment": "Publier le Commentaire",
+    "signInToComment": "Veuillez vous connecter pour participer à la discussion.",
+    "noComments": "Pas encore de commentaires. Soyez la première à commenter !",
+    "deleting": "Suppression en cours...",
+    "notFound": "Discussion non trouvée ou supprimée.",
+    "viewAll": "Voir toutes les discussions"
+  },
+  "createDiscussion": {
+    "title": "Démarrer une Nouvelle Discussion",
+    "editTitle": "Modifier la Discussion",
+    "titleField": "Titre",
+    "titlePlaceholder": "De quoi voulez-vous discuter ?",
+    "category": "Catégorie",
+    "selectCategory": "Sélectionner une catégorie",
+    "content": "Contenu",
+    "contentPlaceholder": "Partagez vos pensées, questions ou expériences...",
+    "creating": "Création en cours...",
+    "submitting": "Soumission en cours...",
+    "postDiscussion": "Publier la Discussion",
+    "updateDiscussion": "Mettre à jour la Discussion",
+    "cancel": "Annuler",
+    "allRequired": "Tous les champs sont obligatoires",
+    "mustLogIn": "Vous devez être connectée"
+  },
+  "discussionCategories": {
+    "healthAdvice": {
+      "title": "Conseils de Santé",
+      "description": "Discutez des questions liées à la santé et partagez des conseils."
+    },
+    "financialSupport": {
+      "title": "Soutien Financier",
+      "description": "Obtenez et donnez des conseils financiers et du soutien."
+    },
+    "jobOpportunities": {
+      "title": "Opportunités d'Emploi",
+      "description": "Partagez des offres d'emploi et des conseils de carrière."
+    },
+    "education": {
+      "title": "Éducation",
+      "description": "Discutez des opportunités et des défis éducatifs."
+    },
+    "technology": {
+      "title": "Technologie",
+      "description": "Partagez des astuces, des conseils et des opportunités technologiques."
+    },
+    "general": {
+      "title": "Général"
+    },
+    "other": {
+      "title": "Autre"
+    }
+  },
+  "common": {
+    "optional": "Optionnel"
+  },
+  "profile": {
+    "title": "Mon Profil",
+    "nameField": "Nom",
+    "emailField": "Email",
+    "emailNoChange": "L'email ne peut pas être modifié",
+    "saveChanges": "Enregistrer les Modifications",
+    "editProfile": "Modifier le Profil",
+    "myResources": "Mes Ressources",
+    "loadingResources": "Chargement de vos ressources...",
+    "noResourcesYet": "Vous n'avez pas encore créé de ressources.",
+    "createFirstResource": "Créez votre première ressource",
+    "updateSuccess": "Profil mis à jour avec succès",
+    "updateFailed": "Échec de la mise à jour : {{status}}",
+    "noResponse": "Aucune réponse reçue. Veuillez réessayer.",
+    "requestFailed": "Échec de la requête : {{message}}",
+    "unexpectedError": "Échec de la mise à jour en raison d'une erreur inattendue",
+    "serverError": "Erreur du serveur : {{status}}",
+    "requestError": "Erreur de requête : {{message}}",
+    "deleteFailed": "Échec de la suppression : {{status}}",
+    "deleteRequestFailed": "Échec de la requête de suppression : {{message}}",
+    "deleteUnexpectedError": "Échec de la suppression de la ressource en raison d'une erreur inattendue"
+  },
+  "footer": {
+    "tagline": "Autonomiser les femmes au Rwanda grâce aux ressources, à la communauté et au soutien.",
+    "quickLinks": "Liens Rapides",
+    "about": "À Propos de Nous",
+    "contact": "Contact",
+    "connectWithUs": "Connectez-vous Avec Nous",
+    "allRightsReserved": "Tous droits réservés."
+  }
+}
