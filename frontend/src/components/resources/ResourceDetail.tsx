@@ -1,6 +1,7 @@
+import axios, { AxiosResponse } from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../services/api';
 import Loader from '../common/Loader';
 import {
   FaCalendarAlt,
@@ -21,6 +22,13 @@ import {
   AdvancedMarker,
   Pin,
 } from '@vis.gl/react-google-maps';
+
+// Extend AxiosResponse type to include fromCache property
+declare module 'axios' {
+  interface AxiosResponse {
+    fromCache?: boolean;
+  }
+}
 
 interface Resource {
   _id: string;
@@ -50,14 +58,35 @@ const ResourceDetail: React.FC = () => {
   const [copySuccess, setCopySuccess] = useState('');
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [isOfflineData, setIsOfflineData] = useState(false);
+
+  // Listen for online/offline events
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchResource = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/resources/${id}`
-        );
+        // Use our api service which handles offline caching
+        const response = await api.get(`/resources/${id}`);
+
+        // Check if the response came from cache
+        if (response.fromCache) {
+          setIsOfflineData(true);
+        }
+
         setResource(response.data);
         setError('');
       } catch (err) {
@@ -88,7 +117,7 @@ const ResourceDetail: React.FC = () => {
   };
 
   const canEdit = () => {
-    return resource && user && user.email === resource.user.email;
+    return resource && user && user.email === resource.user.email && isOnline;
   };
 
   if (loading) {
@@ -233,8 +262,15 @@ const ResourceDetail: React.FC = () => {
                   href={resource.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-6 rounded-lg transition-colors">
-                  <FaLink className="mr-2" /> Access Resource
+                  className={`inline-flex items-center bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-6 rounded-lg transition-colors ${
+                    !isOnline
+                      ? 'opacity-50 cursor-not-allowed pointer-events-none'
+                      : ''
+                  }`}>
+                  <FaLink className="mr-2" />{' '}
+                  {isOnline
+                    ? 'Access Resource'
+                    : 'Access Resource (Unavailable Offline)'}
                 </a>
               </div>
             )}
@@ -288,7 +324,9 @@ const ResourceDetail: React.FC = () => {
                     <FaPhone className="mr-2 text-purple-400" />
                     <a
                       href={`tel:${resource.phoneNumber}`}
-                      className="text-purple-700 hover:text-purple-900 hover:underline">
+                      className={`text-purple-700 hover:text-purple-900 hover:underline ${
+                        !isOnline ? 'opacity-50 pointer-events-none' : ''
+                      }`}>
                       {resource.phoneNumber}
                     </a>
                   </div>
@@ -305,41 +343,68 @@ const ResourceDetail: React.FC = () => {
                 </h3>
 
                 <div className="h-64 w-full rounded-lg overflow-hidden">
-                  <APIProvider
-                    apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''}>
-                    <Map
-                      className="w-full h-full"
-                      center={{
-                        lat: resource.latitude,
-                        lng: resource.longitude,
-                      }}
-                      mapId={
-                        import.meta.env.VITE_GOOGLE_MAP_ID ||
-                        'resource-detail-map'
-                      }
-                      disableDefaultUI={true}
-                      zoom={15}
-                      zoomControl={true}>
-                      <AdvancedMarker
-                        position={{
+                  {isOnline ? (
+                    <APIProvider
+                      apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''}>
+                      <Map
+                        className="w-full h-full"
+                        center={{
                           lat: resource.latitude,
                           lng: resource.longitude,
-                        }}>
-                        <Pin
-                          background={'#3b82f6'}
-                          borderColor={'#1d4ed8'}
-                          glyphColor={'#ffffff'}
-                          scale={1.2}
-                        />
-                      </AdvancedMarker>
-                    </Map>
-                  </APIProvider>
+                        }}
+                        mapId={
+                          import.meta.env.VITE_GOOGLE_MAP_ID ||
+                          'resource-detail-map'
+                        }
+                        disableDefaultUI={true}
+                        zoom={15}
+                        zoomControl={true}>
+                        <AdvancedMarker
+                          position={{
+                            lat: resource.latitude,
+                            lng: resource.longitude,
+                          }}>
+                          <Pin
+                            background={'#3b82f6'}
+                            borderColor={'#1d4ed8'}
+                            glyphColor={'#ffffff'}
+                            scale={1.2}
+                          />
+                        </AdvancedMarker>
+                      </Map>
+                    </APIProvider>
+                  ) : (
+                    <div className="flex items-center justify-center h-full bg-gray-100">
+                      <div className="text-center p-4">
+                        <FaMapMarkerAlt className="mx-auto text-4xl text-gray-400 mb-2" />
+                        <p className="text-gray-500">
+                          Map unavailable offline
+                          <br />
+                          <span className="text-sm">
+                            Coordinates: {resource.latitude.toFixed(6)},{' '}
+                            {resource.longitude.toFixed(6)}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
           </div>
         </div>
       </div>
+      {isOfflineData && (
+        <div className="mb-4 bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded flex items-center">
+          <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fillRule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clipRule="evenodd"></path>
+          </svg>
+          You're viewing cached content while offline
+        </div>
+      )}
     </div>
   );
 };

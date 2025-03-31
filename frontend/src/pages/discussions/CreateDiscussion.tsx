@@ -27,7 +27,6 @@ const CreateDiscussion: React.FC = () => {
   const { token } = useAuth();
   const navigate = useNavigate();
 
-  // Use translation only for display, but keep the actual values matching backend enum
   const categories = [
     {
       key: CATEGORY_KEYS.HEALTH_ADVICE,
