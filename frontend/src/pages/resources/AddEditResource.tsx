@@ -63,14 +63,17 @@ const AddEditResource: React.FC = () => {
     if (isEditing) {
       setLoading(true);
 
-      axios
+      api
         .get(`/resources/${id}`)
         .then((response) => {
           const data = response.data;
-          setTitle(data.title);
-          setDescription(data.description);
-          setCategory(data.category);
-          setUrl(data.url || '');
+          console.log('Resource data loaded:', data); // Debug log
+
+          // Set basic resource information
+          setTitle(data.title || '');
+          setDescription(data.description || '');
+          setCategory(data.category || '');
+          setUrl(data.link || data.url || ''); // Handle both field names
           setImageUrl(data.imageUrl || '');
 
           // Set business info if it exists
@@ -87,6 +90,7 @@ const AddEditResource: React.FC = () => {
           }
         })
         .catch((error) => {
+          console.error('Error loading resource data:', error);
           if (axios.isAxiosError(error)) {
             const axiosError = error as AxiosError<{
               message?: string;
