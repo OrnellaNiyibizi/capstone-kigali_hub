@@ -48,7 +48,7 @@ The Designs of the project can be found [Figma](https://www.figma.com/design/QnS
 
 ## Deployment
 
-The Frontend is deployed on Vercel at this [link](https://capstone-women-kigalihub.vercel.app/) and the Backend will be deployed on Render.
+The Frontend is deployed on Vercel at this [link](https://women-kigalihub.vercel.app/) and the Backend will be deployed on Vercel.
 
 ## License
 
